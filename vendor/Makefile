@@ -8,12 +8,13 @@ CONFIGOPTIONS += --disable-ffmpeg --disable-ffplay --disable-ffprobe --disable-f
 CONFIGOPTIONS += --disable-indevs --disable-outdevs
 
 # install libs
-FFMPEG_LINUX_LIBS += libavcodec.so libavcodec.so.53 libavcodec.so.53.7.0 
-FFMPEG_LINUX_LIBS += libavdevice.so libavdevice.so.53 libavdevice.so.53.1.1
-FFMPEG_LINUX_LIBS += libavfilter.so libavfilter.so.2 libavfilter.so.2.23.0
-FFMPEG_LINUX_LIBS += libavformat.so libavformat.so.53 libavformat.so.53.4.0
-FFMPEG_LINUX_LIBS += libavutil.so libavutil.so.51 libavutil.so.51.9.1
-FFMPEG_LINUX_LIBS += libswscale.so libswscale.so.2 libswscale.so.2.0.0
+# Update these version numbers if you updte the ffmpeg vendor library
+FFMPEG_LINUX_LIBS += libavcodec.so	libavcodec.so.54	libavcodec.so.54.92.100
+FFMPEG_LINUX_LIBS += libavdevice.so	libavdevice.so.54	libavdevice.so.54.3.103
+FFMPEG_LINUX_LIBS += libavfilter.so	libavfilter.so.3	libavfilter.so.3.42.103
+FFMPEG_LINUX_LIBS += libavformat.so	libavformat.so.54	libavformat.so.54.63.104
+FFMPEG_LINUX_LIBS += libavutil.so	libavutil.so.52		libavutil.so.52.18.100
+FFMPEG_LINUX_LIBS += libswscale.so	libswscale.so.2		libswscale.so.2.2.100
 
 ifeq (win32-x86, $(findstring win32-x86, $(T_A)))
 	BIN_INSTALLS_WIN32  += $(wildcard ../ffmpeg-win32-shared/bin/*.*)
@@ -31,11 +32,12 @@ endif
 
 
 install: $(FFMPEGMAK)
+	make -C $(TOP)/vendor/ffmpeg-$(T_A) install
 
 include $(TOP)/configure/RULES
 
 $(TOP)/vendor/ffmpeg-%/config.mak: $(TOP)/vendor/yasm-%/yasm
-	(mkdir -p $(TOP)/vendor/ffmpeg-$(*F); cd $(TOP)/vendor/ffmpeg-$(*F); export PATH=${PATH}:../yasm-$(*F); sh ../ffmpeg/configure $(CONFIGOPTIONS) && make && make install)
+	(mkdir -p $(TOP)/vendor/ffmpeg-$(*F); cd $(TOP)/vendor/ffmpeg-$(*F); export PATH=${PATH}:../yasm-$(*F); sh ../ffmpeg/configure $(CONFIGOPTIONS))
 
 $(TOP)/vendor/yasm-%/yasm:
 	(mkdir -p $(TOP)/vendor/yasm-$(*F); cd $(TOP)/vendor/yasm-$(*F); sh ../yasm/configure && make && touch $@)

@@ -4,13 +4,11 @@ static int ffmpegInitialised = 0;
 static unsigned char *neutral = NULL;
 
 /** Initialise the ffmpeg library */
-void ffmpegInitialise() {
+void ffmpegInitialise()
+{
 	/* check if we're already intialised */
 	if (ffmpegInitialised) return;
 	
-    /* must be called before using avcodec lib */
-    avcodec_init();
-
     /* register all the codecs */
     avcodec_register_all();
 
@@ -21,7 +19,7 @@ void ffmpegInitialise() {
     neutral = (unsigned char *)malloc(NEUTRAL_FRAME_SIZE *  sizeof(unsigned char));
     memset(neutral, 128, NEUTRAL_FRAME_SIZE);           
          
-    /* say that we're initialise */
+    /* say that we're initialised */
 	ffmpegInitialised = 1;
 }    
 
@@ -31,7 +29,8 @@ using the output parameters stored in c. Special case for gray8 -> YUVx, can
 use the data as is and add a neutral array for the colour info.
 */
 int formatArray(NDArray *pArray, asynUser *pasynUser, AVFrame *inPicture,
-		struct SwsContext **pCtx, AVCodecContext *c, AVFrame *scPicture) {
+		struct SwsContext **pCtx, AVCodecContext *c, AVFrame *scPicture)
+{
     static const char *functionName = "formatArray";
     int colorMode = NDColorModeMono;
 	int width, height;

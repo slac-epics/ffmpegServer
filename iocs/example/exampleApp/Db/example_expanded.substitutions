@@ -89,18 +89,6 @@ pattern { P, R, PORT, TIMEOUT, ADDR, XSIZE, YSIZE, HIST_SIZE }
     { "BLxxI-DI-PHDGN-01", ":STAT:", "CAM1.STAT", "1", "0", "1024", "768", "256" }
 }
 
-# Macros:
-#  P      Device Prefix
-#  M      Device Suffix
-#  DTYP   Device Type, usually "asynMCA"
-#  NCHAN  Number of channels (bins)
-#  INP    Inlink, usually "@asyn(<portname> <chan>)"
-file $(MCA)/db/mca.db
-{
-pattern { P, M, DTYP, NCHAN, INP }
-    { "BLxxI-DI-PHDGN-01", ":STAT:TotalArray", "asynMCA", "10000", "@asyn(CAM1.STAT.TOTAL 0)" }
-    { "BLxxI-DI-PHDGN-01", ":STAT:MaxArray", "asynMCA", "10000", "@asyn(CAM1.STAT.MAX 0)" }
-}
 
 # Macros:
 #  P          Device Prefix
@@ -195,7 +183,7 @@ pattern { P, R, O, PORT, TIMEOUT, ADDR, NAME, XPOS, YPOS, XSIZE, YSIZE, SHAPE }
 #  QUALITY  Jpeg Quality in percent
 #  MAXW     Maximum Jpeg Width
 #  MAXH     Maximum Jpeg Height
-file $(FFMPEGSERVER)/db/ffmpegStream.template
+file ffmpegStream.template
 {
 pattern { P, R, PORT, QUALITY, MAXW, MAXH }
     { "BLxxI-DI-PHDGN-01", ":MJPG:", "CAM1.MJPG", "100", "1600", "1200" }

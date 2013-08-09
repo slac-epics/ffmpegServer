@@ -8,6 +8,9 @@ include $(TOP)/RELEASE_SITE
 BASE_MODULE_VERSION=R3.14.12-0.4.0
 EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
+# Use TOP for the path to the product we're building
+FFMPEGSERVER	= $(TOP)
+
 # ===============================================================
 # Define the version(s) of any other needed modules 
 # ===============================================================
@@ -30,4 +33,5 @@ NULLHTTPD_MODULE_VERSION	= R0.5.1-0.1.0
 # ============================================================
 ASYN			= $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 AREADETECTOR	= $(EPICS_MODULES)/areaDetector/$(AREADETECTOR_MODULE_VERSION)
-NULLHTTPD		= $(EPICS_MODULES)/nullhttpd/$(NULLHTTPD_MODULE_VERSION)
+NULLHTTPD		= $(EPICS_MODULES)/nullHttpd/$(NULLHTTPD_MODULE_VERSION)
+

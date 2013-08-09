@@ -1,4 +1,5 @@
 /* local includes */
+#include <unistd.h>
 #include "ffmpegServer.h"
 
 /* EPICS includes */

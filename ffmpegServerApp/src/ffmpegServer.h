@@ -31,7 +31,8 @@ extern "C" {
 #define ffmpegServerMaxHString     "FFMPEG_MAXH"      /* Maximum height of jpg to produce (int32 read/write)*/
 
 /** Take an array source and compress it and serve it as an mjpeg stream. */
-class ffmpegStream : public NDPluginDriver {
+class ffmpegStream : public NDPluginDriver
+{
 public:
     ffmpegStream(const char *portName, int queueSize, int blockingCallbacks, 
                  const char *NDArrayPort, int NDArrayAddr, int maxBuffers, int maxMemory,
@@ -74,14 +75,14 @@ private:
 
     NDArray* get_jpeg();
     NDArray* wait_for_jpeg(int sid);    
-    void allocScArray(int size);
+    void allocScArray(size_t size);
 };
 #define NUM_FFMPEG_SERVER_PARAMS (&LAST_FFMPEG_SERVER_PARAM - &FIRST_FFMPEG_SERVER_PARAM + 1)                             
                              
 /* These are global to the http server */
 static ffmpegStream **streams;
 static int nstreams;
-    
+
 #endif
 /**
  * \file

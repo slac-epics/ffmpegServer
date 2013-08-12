@@ -14,7 +14,8 @@
 
 /** Writes NDArrays to a ffmpeg file. This can be one of many video formats
   */
-class ffmpegFile : public NDPluginFile {
+class ffmpegFile : public NDPluginFile
+{
 public:
     ffmpegFile(const char *portName, int queueSize, int blockingCallbacks,
                const char *NDArrayPort, int NDArrayAddr,
@@ -42,7 +43,8 @@ private:
     NDArray *scArray;
     NDArray *outArray;
     struct SwsContext *ctx;      
-    int outSize, needStop;      
+    size_t	outSize;
+	int		needStop;      
     int sheight, swidth;
     PixelFormat spix_fmt;
     AVOutputFormat *fmt;

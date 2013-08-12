@@ -30,11 +30,17 @@ asynStatus ffmpegFile::openFile(const char *fileName, NDFileOpenMode_t openMode,
     if (openMode & NDFileModeAppend) return(asynError);
 
     /* See if we are writing an image type */
+#if 0
     enum CodecID codecID = av_guess_image2_codec(fileName);
+#else
+    enum CodecID codecID = CODEC_ID_NONE;
+	fmt = av_guess_format( "image2", fileName, NULL );
+	if ( fmt != NULL )
+		codecID = av_guess_codec( fmt, NULL, fileName, NULL, AVMEDIA_TYPE_VIDEO );
+#endif
     if (codecID != CODEC_ID_NONE) {
     	// We are looking at a single image type
     	this->supportsMultipleArrays = 0;
-    	fmt = av_guess_format("image2", fileName, NULL);
     	codec = avcodec_find_encoder(codecID);
     	if (codec) {
     		fmt->video_codec = codecID;
@@ -139,6 +145,7 @@ asynStatus ffmpegFile::openFile(const char *fileName, NDFileOpenMode_t openMode,
 
     }
 
+#if 0	/* No longer needed (sometime between ffmpeg-0.8 and ffmpeg-1.2.2)
     /* set the output parameters (must be done even if no
        parameters). */
     if (av_set_parameters(oc, NULL) < 0) {
@@ -147,6 +154,7 @@ asynStatus ffmpegFile::openFile(const char *fileName, NDFileOpenMode_t openMode,
             driverName2, functionName);            
         return(asynError);
     }
+#endif
 
     av_dump_format(oc, 0, fileName, 1);
     /* now that all the parameters are set, we can open the audio and
@@ -205,7 +213,7 @@ asynStatus ffmpegFile::openFile(const char *fileName, NDFileOpenMode_t openMode,
     }
 
     /* write the stream header, if any */
-    if (av_write_header(oc) < 0)
+    if (avformat_write_header(oc, NULL) < 0)
         printf("Could not write header for output file (incorrect codec parameters ?)");
 	needStop = 1;
     return(asynSuccess);
@@ -217,7 +225,6 @@ asynStatus ffmpegFile::openFile(const char *fileName, NDFileOpenMode_t openMode,
   */
 asynStatus ffmpegFile::writeFile(NDArray *pArray)
 {
-
     static const char *functionName = "writeFile";
 	int ret;
 
@@ -251,7 +258,7 @@ asynStatus ffmpegFile::writeFile(NDArray *pArray)
         ret = av_interleaved_write_frame(oc, &pkt);
     } else {
         /* encode the image */
-        int out_size = avcodec_encode_video(c, (uint8_t *) outArray->pData, outSize, scPicture);
+        size_t	out_size = avcodec_encode_video(c, (uint8_t *) outArray->pData, outSize, scPicture);
         /* if zero size, it means the image was buffered */
         if (out_size > 0) {
             AVPacket pkt;

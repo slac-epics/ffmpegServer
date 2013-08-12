@@ -13,19 +13,22 @@
 /* windows includes */
 #ifdef _MSC_VER /* Microsoft Compilers */
 /** win32 implementation of pthread_cond_init */
-int pthread_cond_init (pthread_cond_t *cv, const pthread_condattr_t *) {
+int pthread_cond_init (pthread_cond_t *cv, const pthread_condattr_t *)
+{
   cv->semaphore = CreateEvent (NULL, FALSE, FALSE, NULL);
   return 0;
 }
 /** win32 implementation of pthread_cond_wait */
-int pthread_cond_wait (pthread_cond_t *cv, pthread_mutex_t *external_mutex) {
+int pthread_cond_wait (pthread_cond_t *cv, pthread_mutex_t *external_mutex)
+{
   pthread_mutex_unlock(external_mutex);
   WaitForSingleObject (cv->semaphore, INFINITE);
   pthread_mutex_lock(external_mutex);
   return 0;
 }
 /** win32 implementation of pthread_cond_signal */
-int pthread_cond_signal (pthread_cond_t *cv) {
+int pthread_cond_signal (pthread_cond_t *cv)
+{
   SetEvent (cv->semaphore);
   return 0;
 }
@@ -34,7 +37,8 @@ int pthread_cond_signal (pthread_cond_t *cv) {
 static const char *driverName = "ffmpegServer";
 
 /** This is called whenever a client requests a stream */
-void dorequest(int sid) {
+void dorequest(int sid)
+{
     char *portName;
     int len;
     char *ext;
@@ -173,7 +177,8 @@ int config_read()
 static int stopping = 0;
 
 /** c function that will be called at epicsExit that shuts down the http server cleanly */
-void c_shutdown(void *) {
+void c_shutdown(void *)
+{
     printf("Shutting down http server...");
     stopping = 1;
     server_shutdown();
@@ -185,7 +190,8 @@ void c_shutdown(void *) {
 Call this before creating any instances of ffmpegStream
 \param port port number to run the server on. Defaults to 8080
 */
-void ffmpegServerConfigure(int port) {
+void ffmpegServerConfigure(int port)
+{
     int status;
     if (port==0) {
         port = 8080;
@@ -222,9 +228,11 @@ void ffmpegServerConfigure(int port) {
 }
 
 /** Internal function to send a single snapshot */
-void ffmpegStream::send_snapshot(int sid, int index) {
+void ffmpegStream::send_snapshot(int sid, int index)
+{
     time_t now=time((time_t*)0);
-    int size, always_on;    
+    size_t size;
+	int	always_on;    
     NDArray* pArray;
 //  printf("JPEG requested\n");
     /* Say we're listening */
@@ -267,7 +275,8 @@ void ffmpegStream::send_snapshot(int sid, int index) {
 
 
 /** Internal function to send a jpeg frame as part of an mjpeg stream */
-int ffmpegStream::send_frame(int sid, NDArray *pArray) {
+int ffmpegStream::send_frame(int sid, NDArray *pArray)
+{
     int ret = 0;
 //    double difftime;
 //    struct timeval start, end;
@@ -293,7 +302,8 @@ int ffmpegStream::send_frame(int sid, NDArray *pArray) {
 }    
 
 /** Internal function to get the current jpeg and return it */
-NDArray* ffmpegStream::get_jpeg() {
+NDArray* ffmpegStream::get_jpeg()
+{
     NDArray* pArray;
     pthread_mutex_lock(&this->mutex);
     pArray = this->jpeg;
@@ -304,7 +314,8 @@ NDArray* ffmpegStream::get_jpeg() {
     
 
 /** Internal function to wait for a jpeg to be produced */
-NDArray* ffmpegStream::wait_for_jpeg(int sid) {
+NDArray* ffmpegStream::wait_for_jpeg(int sid)
+{
     NDArray* pArray;
     pthread_mutex_lock(&this->mutex);
     pthread_cond_wait(&(this->cond[sid]), &this->mutex);
@@ -315,7 +326,8 @@ NDArray* ffmpegStream::wait_for_jpeg(int sid) {
 }    
 
 /** Internal function to send an mjpg stream */
-void ffmpegStream::send_stream(int sid) {
+void ffmpegStream::send_stream(int sid)
+{
     int ret = 0;
     int always_on;
     NDArray* pArray;
@@ -348,7 +360,8 @@ void ffmpegStream::send_stream(int sid) {
 } 
 
 /** Internal function to alloc a correctly sized processed array */
-void ffmpegStream::allocScArray(int size) {
+void ffmpegStream::allocScArray(size_t size)
+{
     if (this->scArray) {
         if (this->scArray->dims[0].size >= size) {
             /* the processed array is already big enough */
@@ -376,7 +389,8 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
     /* we're going to get these with getIntegerParam */
     int quality, clients, false_col, always_on, maxw, maxh;
     /* we're going to get these from the dims of the image */
-    int width, height, size;
+    int width, height;
+	size_t	size;
     /* for printing errors */
     const char *functionName = "processCallbacks";
     /* for getting the colour mode */
@@ -502,7 +516,7 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
     }
     
     /* Convert it to a jpeg */        
-    this->jpeg = this->pNDArrayPool->alloc(1, &size, NDInt8, 0, NULL);
+    this->jpeg = this->pNDArrayPool->alloc(1, &size, NDInt8, 0, (void *) NULL);
     this->jpeg->dims[0].size = avcodec_encode_video(c, (uint8_t*)this->jpeg->pData, c->width * c->height, scPicture);    
 //    printf("Frame! Size: %d\n", this->jpeg->dims[0].size);
     

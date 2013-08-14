@@ -40,13 +40,17 @@ else ifeq (linux-x86, $(findstring linux-x86, $(T_A)))
 	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-linux-x86/, $(FFMPEG_LINUX_LIBS))
 	FFMPEGMAK = $(TOP)/vendor/ffmpeg-linux-x86/config.mak
 	YASM = $(TOP)/vendor/yasm-linux-x86/yasm
+	CONFIGOPTIONS += --arch=x86
+	CONFIGOPTIONS += --extra-cxxflags=-D_X86
+	CONFIGOPTIONS += --extra-cflags=-m32
+	CONFIGOPTIONS += --extra-ldflags=-m32
 endif
 
 include $(TOP)/configure/RULES
 
 # Local build rules
 
-install: showme
+#install: showme
 
 showme:
 	@echo T_A=$(T_A)
@@ -64,11 +68,6 @@ $(LIB_INSTALLS_Linux): build_ffmpeg
 
 build_ffmpeg: $(FFMPEGMAK) $(YASM)
 	@echo Building ffmpeg for $(T_A) target architecture
-	ls -l $(FFMPEGMAK)
-	ls -l $(YASM)
-	@echo LIB_INSTALLS=$(LIB_INSTALLS)
-	@echo LIB_INSTALLS_Linux=$(LIB_INSTALLS_Linux)
-	@echo INSTALL_LIB=$(INSTALL_LIB)
 ifneq ("", "$(T_A)")
 	PATH=${PATH}:../yasm-$(T_A) make -C $(TOP)/vendor/ffmpeg-$(T_A)
 endif
@@ -79,10 +78,6 @@ ifneq ("", "$(T_A)")
 	PATH=${PATH}:../yasm-$(T_A) make -C $(TOP)/vendor/ffmpeg-$(T_A) install
 endif
 
-# $(YASM):	build_yasm
-# 
-# build_yasm:
-
 realclean archclean archs_common_clean:	local_realclean
 
 local_realclean:
@@ -91,11 +86,17 @@ local_realclean:
 
 $(TOP)/vendor/ffmpeg-%/config.mak: $(YASM)
 	@echo Configuring ffmpeg for $(*F) target architecture
-	@ls -l $(YASM)
 	(mkdir -p $(TOP)/vendor/ffmpeg-$(*F); cd $(TOP)/vendor/ffmpeg-$(*F); export PATH=${PATH}:../yasm-$(*F); sh ../ffmpeg/configure $(CONFIGOPTIONS))
 
-$(TOP)/vendor/yasm-%/yasm:
+$(TOP)/vendor/yasm-%/yasm:	$(TOP)/vendor/yasm-%/Makefile
+	@echo Building yasm for $(*F) target architecture
+	make -C $(TOP)/vendor/yasm-$(*F)
+
+# Each yasm target arch will build as if it's the host arch
+# Not obvious if yasm/configure supports cross-compile,
+# but we only need it for building ffmpeg.
+# TODO: Figure out a way to only build it once
+$(TOP)/vendor/yasm-%/Makefile:
 	@echo Configuring yasm for $(*F) target architecture
-	(mkdir -p $(TOP)/vendor/yasm-$(*F); cd $(TOP)/vendor/yasm-$(*F); sh ../yasm/configure && make && touch $@)
-	ls -l $@
+	(mkdir -p $(TOP)/vendor/yasm-$(*F); cd $(TOP)/vendor/yasm-$(*F); sh ../yasm/configure )
 

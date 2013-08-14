@@ -15,7 +15,7 @@ FFMPEGSERVER	= $(TOP)
 # Define the version(s) of any other needed modules 
 # ===============================================================
 ASYN_MODULE_VERSION			= R4.21-0.1.0
-AREADETECTOR_MODULE_VERSION	= R1.9-0.3.0
+AREADETECTOR_MODULE_VERSION	= R1.9-0.4.0
 NULLHTTPD_MODULE_VERSION	= R0.5.1-0.1.0
 
 # ============================================================

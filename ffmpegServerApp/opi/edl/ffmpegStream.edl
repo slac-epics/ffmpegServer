@@ -414,12 +414,12 @@ bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
 displaySource "file"
-file "NDPluginBase"
+file "areaDetectorScreens/NDPluginBase.edl"
 sizeOfs 5
 numDsps 2
 displayFileName {
-  0 "NDPluginBase"
-  1 "NDPluginBase"
+  0 "areaDetectorScreens/NDPluginBase.edl"
+  1 "areaDetectorScreens/NDPluginBase.edl"
 }
 noScroll
 endObjectProperties
@@ -901,7 +901,7 @@ font "arial-bold-r-12.0"
 buttonLabel "HTML Doc"
 numCmds 1
 command {
-  0 "firefox file://$(which ffmpegFile.edl | sed \"s|data/ffmpegFile.edl|documentation/doxygen/ffmpegStream_8template.html|\") &"
+  0 "firefox file://ffmpegHelp/doxygen/ffmpegStream_8template.html &"
 }
 endObjectProperties
 

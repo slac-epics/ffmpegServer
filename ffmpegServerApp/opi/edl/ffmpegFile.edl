@@ -3,13 +3,13 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 872
-y 185
-w 390
-h 820
-font "arial-bold-r-12.0"
-ctlFont "arial-bold-r-12.0"
-btnFont "arial-bold-r-12.0"
+x 271
+y 49
+w 435
+h 882
+font "helvetica-medium-r-12.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-bold-r-12.0"
 fgColor index 14
 bgColor index 3
 textColor index 14
@@ -30,28 +30,13 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 0
-y 665
-w 390
-h 155
-lineColor index 5
-fill
-fillColor index 5
-endObjectProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
 x 5
-y 680
+y 740
 w 380
 h 135
 lineColor index 14
 fill
-fillColor index 3
+fillColor index 6
 endObjectProperties
 
 # (Static Text)
@@ -61,10 +46,10 @@ major 4
 minor 1
 release 0
 x 5
-y 670
-w 102
-h 15
-font "arial-medium-r-12.0"
+y 730
+w 107
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
@@ -74,14 +59,14 @@ autoSize
 border
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 155
-y 690
+y 750
 w 90
 h 20
 controlPv "$(P)$(R)BITRATE_RBV"
@@ -89,18 +74,18 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 60
-y 690
+y 750
 w 90
 h 20
 controlPv "$(P)$(R)BITRATE"
@@ -108,7 +93,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -118,10 +103,10 @@ major 4
 minor 1
 release 0
 x 10
-y 690
+y 750
 w 45
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -137,10 +122,10 @@ major 4
 minor 1
 release 0
 x 260
-y 690
+y 750
 w 30
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -149,14 +134,14 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 340
-y 690
+y 750
 w 40
 h 20
 controlPv "$(P)$(R)FPS_RBV"
@@ -164,18 +149,18 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 295
-y 690
+y 750
 w 40
 h 20
 controlPv "$(P)$(R)FPS"
@@ -183,7 +168,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Embedded Window)
@@ -194,7 +179,7 @@ minor 1
 release 0
 x 0
 y 0
-w 390
+w 410
 h 385
 fgColor index 14
 bgColor index 3
@@ -219,8 +204,8 @@ minor 1
 release 0
 x 0
 y 385
-w 390
-h 280
+w 410
+h 340
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
@@ -236,14 +221,14 @@ displayFileName {
 noScroll
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 100
-y 715
+y 775
 w 40
 h 20
 controlPv "$(P)$(R)WIDTH_RBV"
@@ -251,18 +236,18 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 55
-y 715
+y 775
 w 40
 h 20
 controlPv "$(P)$(R)WIDTH"
@@ -270,7 +255,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -280,10 +265,10 @@ major 4
 minor 1
 release 0
 x 10
-y 715
+y 775
 w 40
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -299,10 +284,10 @@ major 4
 minor 1
 release 0
 x 150
-y 715
+y 775
 w 45
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -311,14 +296,14 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 200
-y 715
+y 775
 w 40
 h 20
 controlPv "$(P)$(R)HEIGHT"
@@ -326,17 +311,17 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
 minor 0
 release 0
 x 245
-y 715
+y 775
 w 40
 h 20
 controlPv "$(P)$(R)HEIGHT_RBV"
@@ -344,7 +329,7 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
@@ -355,10 +340,10 @@ major 4
 minor 1
 release 0
 x 10
-y 735
-w 301
-h 75
-font "arial-medium-r-12.0"
+y 795
+w 302
+h 70
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -376,17 +361,17 @@ endObjectProperties
 object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 235
-y 785
+y 845
 w 145
 h 25
 fgColor index 14
 bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
-font "arial-bold-r-12.0"
+font "helvetica-bold-r-12.0"
 buttonLabel "HTML Doc"
 numCmds 1
 command {

@@ -3,13 +3,13 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1277
-y 209
+x 877
+y 60
 w 390
 h 820
-font "arial-bold-r-12.0"
-ctlFont "arial-bold-r-12.0"
-btnFont "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-medium-r-14.0"
 fgColor index 14
 bgColor index 3
 textColor index 14
@@ -19,25 +19,11 @@ ctlBgColor1 index 3
 ctlBgColor2 index 3
 topShadowColor index 1
 botShadowColor index 11
+title "$(P) ffmpeg Stream Plugin"
 showGrid
 snapToGrid
-gridSize 5
+gridSize 4
 endScreenProperties
-
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 0
-y 385
-w 390
-h 435
-lineColor index 5
-fill
-fillColor index 5
-endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -51,7 +37,7 @@ w 380
 h 80
 lineColor index 14
 fill
-fillColor index 3
+fillColor index 6
 endObjectProperties
 
 # (Rectangle)
@@ -66,7 +52,7 @@ w 380
 h 65
 lineColor index 14
 fill
-fillColor index 3
+fillColor index 6
 endObjectProperties
 
 # (Rectangle)
@@ -81,7 +67,7 @@ w 380
 h 130
 lineColor index 14
 fill
-fillColor index 3
+fillColor index 6
 endObjectProperties
 
 # (Static Text)
@@ -92,9 +78,9 @@ minor 1
 release 0
 x 5
 y 390
-w 45
-h 15
-font "arial-medium-r-12.0"
+w 48
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
@@ -112,9 +98,9 @@ minor 1
 release 0
 x 5
 y 540
-w 113
-h 15
-font "arial-medium-r-12.0"
+w 117
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
@@ -141,10 +127,10 @@ topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)ALWAYS_ON"
 indicatorPv "$(P)$(R)ALWAYS_ON_RBV"
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -159,11 +145,11 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
@@ -178,7 +164,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -191,7 +177,7 @@ x 10
 y 430
 w 80
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -200,7 +186,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -215,7 +201,7 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
@@ -229,7 +215,7 @@ x 205
 y 430
 w 80
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -238,7 +224,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -253,7 +239,7 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
@@ -267,7 +253,7 @@ x 10
 y 505
 w 80
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -286,7 +272,7 @@ x 10
 y 455
 w 85
 h 25
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -299,7 +285,7 @@ endObjectProperties
 object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 15
 y 560
@@ -309,12 +295,13 @@ fgColor index 43
 bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 buttonLabel "Firefox Snapshot"
 numCmds 1
 command {
-  0 "firefox `caget -t -S $(P)$(R)JPG_URL_RBV`"
+  0 "firefox --no-remote `caget -t -S $(P)$(R)JPG_URL_RBV`"
 }
+execCursor
 endObjectProperties
 
 # (Static Text)
@@ -327,7 +314,7 @@ x 10
 y 405
 w 80
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -336,7 +323,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -351,7 +338,7 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
@@ -359,7 +346,7 @@ endObjectProperties
 object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 275
 y 645
@@ -369,11 +356,11 @@ fgColor index 43
 bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 buttonLabel "Firefox (slow)"
 numCmds 1
 command {
-  0 "firefox `caget -t -S $(P)$(R)MJPG_URL_RBV`"
+  0 "firefox --no-remote `caget -t -S $(P)$(R)MJPG_URL_RBV`"
 }
 endObjectProperties
 
@@ -381,7 +368,7 @@ endObjectProperties
 object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 15
 y 645
@@ -391,7 +378,7 @@ fgColor index 43
 bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 buttonLabel "Qt Viewer (fast)"
 numCmds 1
 command {
@@ -435,7 +422,7 @@ y 590
 w 360
 h 20
 controlPv "$(P)$(R)JPG_URL_RBV"
-font "arial-medium-r-10.0"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 10
 limitsFromDb
@@ -456,7 +443,7 @@ y 690
 w 360
 h 20
 controlPv "$(P)$(R)MJPG_URL_RBV"
-font "arial-medium-r-10.0"
+font "helvetica-medium-r-12.0"
 fgColor index 16
 bgColor index 10
 limitsFromDb
@@ -466,7 +453,7 @@ newPos
 objType "monitors"
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -481,11 +468,11 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
@@ -500,7 +487,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -513,7 +500,7 @@ x 10
 y 480
 w 115
 h 25
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -522,7 +509,7 @@ value {
 }
 endObjectProperties
 
-# (Textupdate)
+# (Text Update)
 object TextupdateClass
 beginObjectProperties
 major 10
@@ -537,11 +524,11 @@ fgColor index 16
 fgAlarm
 bgColor index 10
 fill
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
@@ -556,7 +543,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -567,9 +554,9 @@ minor 1
 release 0
 x 5
 y 625
-w 127
-h 15
-font "arial-medium-r-12.0"
+w 128
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
@@ -583,7 +570,7 @@ endObjectProperties
 object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 135
 y 645
@@ -593,7 +580,7 @@ fgColor index 43
 bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 buttonLabel "Qt Viewer (fallback)"
 numCmds 1
 command {
@@ -611,7 +598,7 @@ x 15
 y 670
 w 115
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
@@ -631,7 +618,7 @@ x 135
 y 670
 w 135
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
@@ -651,7 +638,7 @@ x 275
 y 670
 w 100
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
 bgColor index 3
@@ -673,7 +660,7 @@ w 380
 h 55
 lineColor index 14
 fill
-fillColor index 3
+fillColor index 6
 endObjectProperties
 
 # (Static Text)
@@ -684,9 +671,9 @@ minor 1
 release 0
 x 5
 y 725
-w 72
-h 15
-font "arial-medium-r-12.0"
+w 75
+h 14
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 5
 value {
@@ -706,7 +693,7 @@ x 90
 y 740
 w 65
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -715,7 +702,7 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
@@ -730,7 +717,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -743,7 +730,7 @@ x 90
 y 765
 w 65
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -752,7 +739,7 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
@@ -767,7 +754,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -780,7 +767,7 @@ x 220
 y 740
 w 80
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -789,7 +776,7 @@ value {
 }
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
@@ -804,10 +791,10 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
-# (Textentry)
+# (Text Entry)
 object TextentryClass
 beginObjectProperties
 major 10
@@ -823,7 +810,7 @@ fgColor index 25
 fgAlarm
 bgColor index 3
 fill
-font "arial-bold-r-10.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Static Text)
@@ -836,7 +823,7 @@ x 220
 y 765
 w 80
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -855,7 +842,7 @@ x 10
 y 740
 w 75
 h 20
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
 useDisplayBg
@@ -880,14 +867,14 @@ inconsistentColor index 0
 topShadowColor index 1
 botShadowColor index 11
 controlPv "$(P)$(R)GRID"
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 endObjectProperties
 
 # (Shell Command)
 object shellCmdClass
 beginObjectProperties
 major 4
-minor 2
+minor 3
 release 0
 x 5
 y 795
@@ -897,7 +884,7 @@ fgColor index 14
 bgColor index 3
 topShadowColor index 1
 botShadowColor index 11
-font "arial-bold-r-12.0"
+font "helvetica-medium-r-12.0"
 buttonLabel "HTML Doc"
 numCmds 1
 command {

@@ -1,0 +1,6 @@
+epicsEnvSet("ARCH","win32-x86")
+epicsEnvSet("IOC","O.win32-x86")
+epicsEnvSet("TOP","W:/prod/R3.14.11/support/ffmpegServer/1-16-3/iocs/example_win32")
+epicsEnvSet("SUPPORT","W:\\prod/R3.14.11/support")
+epicsEnvSet("WORK","W:\\work/R3.14.11/support")
+epicsEnvSet("EPICS_BASE","W:\\epics/R3.14.11/base")

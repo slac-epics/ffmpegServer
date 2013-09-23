@@ -1,30 +1,37 @@
 #RELEASE Location of external products
 # Run "gnumake clean uninstall install" in the application
 # top directory each time this file is changed.
-#
-# NOTE: The build does not check dependancies on files
-# external to this application. Thus you should run
-# "gnumake clean uninstall install" in the top directory
-# each time EPICS_BASE, SNCSEQ, or any other external
-# module defined in the RELEASE file is rebuilt.
+
+# =============================================================
+# All needed variables come in via the following include:
+# =============================================================
+include $(TOP)/RELEASE_SITE
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-SUPPORT=/dls_sw/prod/R3.14.11/support
-WORK=/dls_sw/work/R3.14.11/support
+# =============================================================
+# Define location of the modules tree
+# =============================================================
+EPICS_MODULES=$(MODULES_SITE_TOP)
 
-# If you don't want to install into $(TOP) then
-# define INSTALL_LOCATION_APP here
-#INSTALL_LOCATION_APP=<fullpathname>
-
-ASYN=         $(SUPPORT)/asyn/4-21
-AREADETECTOR= $(SUPPORT)/areaDetector/1-9dls4
-NULLHTTPD=    $(SUPPORT)/nullhttpd/0-5-1dls5
-
+# =============================================================
+# Define the version of modules needed by
+# IOC apps or other Support apps
+# =============================================================
+ASYN_MODULE_VERSION=asyn-R4-21_1-0
+AREA_DETECTOR_MODULE_VERSION=areaDetector-R1-9-1_1-0
+NULLHTTPD_MODULE_VERSION=nullhttpd-R-0-5-1dls2_1-0
+FFMPEG_MODULE_VERSION=ffmpeg-0.9.2
+# ============================================================
+#  IPAC release V2-7 or later is required.
+# Carrier card support for acromag and xycom
+# ============================================================
+ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
+AREA_DETECTOR=$(EPICS_MODULES)/areaDetector/$(AREA_DETECTOR_MODULE_VERSION)
+NULLHTTPD=$(EPICS_MODULES)/nullhttpd/$(NULLHTTPD_MODULE_VERSION)
+FFMPEG=/afs/slac/g/lcls/package/ffmpeg/$(FFMPEG_MODULE_VERSION)
+# =================================================================
+# Define EPICS_BASE
 # EPICS_BASE usually appears last so other apps can override stuff:
-EPICS_BASE=/dls_sw/epics/R3.14.11/base
-
-#Capfast users may need the following definitions
-#CAPFAST_TEMPLATES=
-#SCH2EDIF_PATH=
--include $(TOP)/configure/RELEASE.private
+# =================================================================
+EPICS_BASE=$(BASE_SITE_TOP)/$(EPICS_BASE_VER)

@@ -20,9 +20,7 @@ int pthread_cond_init (pthread_cond_t *cv, const pthread_condattr_t *) {
 int pthread_cond_wait (pthread_cond_t *cv, pthread_mutex_t *external_mutex) {
   pthread_mutex_unlock(external_mutex);
   /** This is wrong, we could miss a wakeup call here... */
-  /** Note: this a wait with timeout, on windows we will get a jpeg every second
-    * even if there isn't a new one. This avoids GDA timeouts... */
-  WaitForSingleObject (cv->semaphore, 1000);
+  WaitForSingleObject (cv->semaphore, INFINITE);
   pthread_mutex_lock(external_mutex);
   return 0;
 }
@@ -54,7 +52,7 @@ void dorequest(int sid) {
     ext = strrchr(conn[sid].dat->in_RequestURI+1, '.');
 
     if (ext != NULL) {
-        len = (int) (ext - conn[sid].dat->in_RequestURI - 1);
+        len = ext - conn[sid].dat->in_RequestURI - 1;
         portName = (char *)calloc(sizeof(char), 256);
         strncpy(portName, conn[sid].dat->in_RequestURI+1, len);
         ext++;
@@ -251,7 +249,7 @@ void ffmpegStream::send_snapshot(int sid, int index) {
         return;
     }
     /* Send the right header for a jpeg */
-    size = (int) pArray->dims[0].size;    
+    size = pArray->dims[0].size;    
     conn[sid].dat->out_ContentLength=size;
     send_fileheader(sid, 0, 200, "OK", "1", "image/jpeg", size, now);
     /* Send the jpeg itself */
@@ -281,7 +279,7 @@ int ffmpegStream::send_frame(int sid, NDArray *pArray) {
         flushbuffer(sid);
         /* Send the jpeg */
 //        gettimeofday(&start, NULL);         
-        ret = send(conn[sid].socket, (const char *) pArray->pData, (int) pArray->dims[0].size, 0);                  
+        ret = send(conn[sid].socket, (const char *) pArray->pData, pArray->dims[0].size, 0);                  
 //        gettimeofday(&end, NULL);         
         /* Send a boundary */
         prints("\r\n--BOUNDARY\r\n");
@@ -417,14 +415,14 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
     pAttribute = pArray->pAttributeList->find("ColorMode");
     if (pAttribute) pAttribute->getValue(NDAttrInt32, &colorMode);
     if ((pArray->ndims == 2) && (colorMode == NDColorModeMono)) {
-        width  = (int) pArray->dims[0].size;
-        height = (int) pArray->dims[1].size;
+        width  = pArray->dims[0].size;
+        height = pArray->dims[1].size;
     } else if ((pArray->ndims == 3) && (pArray->dims[0].size == 3) && (colorMode == NDColorModeRGB1)) {
-        width  = (int) pArray->dims[1].size;
-        height = (int) pArray->dims[2].size;
+        width  = pArray->dims[1].size;
+        height = pArray->dims[2].size;
     } else {
-        width  = (int) pArray->dims[0].size;
-        height = (int) pArray->dims[1].size;
+        width  = pArray->dims[0].size;
+        height = pArray->dims[1].size;
     }
 
     /* If we exceed the maximum size */
@@ -446,14 +444,12 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
             avcodec_close(c);
             av_free(c);
         }
-        c = avcodec_alloc_context3(codec);
+        c = avcodec_alloc_context();
         /* Make sure that we don't try and create an image smaller than FF_MIN_BUFFER_SIZE */
         if (width * height < FF_MIN_BUFFER_SIZE) {
         	double sf = sqrt(1.0 * FF_MIN_BUFFER_SIZE / width / height);
         	height = (int) (height * sf + 1);
-        	if (height % 4) height = height +16 - (height % 16);        	
         	width = (int) (width * sf + 1);        	
-        	if (width % 4) width = width +16 - (width % 16);
 		}        	
         c->width = width;
         c->height = height;
@@ -470,7 +466,7 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
                 c->pix_fmt = codec->pix_fmts[0];
         }           
         /* open it */
-        if (avcodec_open2(c, codec, NULL) < 0) {
+        if (avcodec_open(c, codec) < 0) {
             c = NULL;
             asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
                 "%s:%s: could not open codec\n",
@@ -508,22 +504,8 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
     
     /* Convert it to a jpeg */        
     this->jpeg = this->pNDArrayPool->alloc(1, &size, NDInt8, 0, NULL);
-
-    AVPacket pkt;
-    int got_output;
-    av_init_packet(&pkt);
-    pkt.data = (uint8_t*)this->jpeg->pData;    // packet data will be allocated by the encoder
-    pkt.size = c->width * c->height;
-
-    if (avcodec_encode_video2(c, &pkt, scPicture, &got_output)) {
-        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-            "%s:%s: Encoding jpeg failed\n",
-            driverName, functionName);
-    }
-
-    this->jpeg->dims[0].size = pkt.size;
-
-    //printf("Frame! Size: %d\n", this->jpeg->dims[0].size);
+    this->jpeg->dims[0].size = avcodec_encode_video(c, (uint8_t*)this->jpeg->pData, c->width * c->height, scPicture);    
+//    printf("Frame! Size: %d\n", this->jpeg->dims[0].size);
     
     /* signal fresh_frame to output plugin and unlock mutex */
     for (int i=0; i<config.server_maxconn; i++) {

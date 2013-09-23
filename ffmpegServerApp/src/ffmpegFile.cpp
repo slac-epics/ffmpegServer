@@ -17,11 +17,9 @@ static const char *driverName2 = "ffmpegFile";
   
 /**************************************************************/
 
-asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode, NDArray *pArray)
+asynStatus ffmpegFile::openFile(const char *fileName, NDFileOpenMode_t openMode, NDArray *pArray)
 {
-    int ret;
-	static const char *functionName = "openFile";
-	char errbuf[AV_ERROR_MAX_STRING_SIZE];
+    static const char *functionName = "openFile";
     this->sheight = 0;
 	this->swidth = 0;
 
@@ -31,153 +29,135 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
     /* We don't support opening an existing file for appending yet */
     if (openMode & NDFileModeAppend) return(asynError);
 
-    /* allocate the output media context */
-    avformat_alloc_output_context2(&oc, NULL, NULL, filename);
-    if (!oc) {
-        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-            "%s:%s Could not deduce output format from file extension: using MPEG.\n",
-            driverName2, functionName);
-        avformat_alloc_output_context2(&oc, NULL, "mpeg", filename);
-    }
-    if (!oc) {
-        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-            "%s:%s Memory error: Cannot allocate output context\n",
-            driverName2, functionName);
-        return(asynError);
-    }
-
-    /* If we are using image2 then we only support one frame per image */
-    fmt = oc->oformat;
-    if (strcmp("image2", fmt->name)==0) {
+    /* See if we are writing an image type */
+    enum CodecID codecID = av_guess_image2_codec(fileName);
+    if (codecID != CODEC_ID_NONE) {
+    	// We are looking at a single image type
     	this->supportsMultipleArrays = 0;
+    	fmt = av_guess_format("image2", fileName, NULL);
+    	codec = avcodec_find_encoder(codecID);
+    	if (codec) {
+    		fmt->video_codec = codecID;
+    	}
     } else {
+    	// This is a multiple image type
     	this->supportsMultipleArrays = 1;
-        /* We want to use msmpeg4v2 instead of mpeg4 for avi files*/
-        if (av_match_ext(filename, "avi") && fmt->video_codec == CODEC_ID_MPEG4) {
-        	fmt->video_codec = CODEC_ID_MSMPEG4V2;
+    	fmt = av_guess_format(NULL, fileName, NULL);
+        /* auto detect the output format from the name. default is
+           mpeg. */
+        if (!fmt) {
+            printf("Could not deduce output format from file extension: using MPEG.\n");
+            fmt = av_guess_format("avi", NULL, NULL);
         }
     }
-
-    codec_id = av_guess_codec(fmt, NULL, filename, NULL, AVMEDIA_TYPE_VIDEO);
-    if (codec_id == AV_CODEC_ID_NONE) {
-        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-            "%s:%s Codec has no video stream component\n",
-            driverName2, functionName);
+    if (!fmt) {
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+            "%s:%s Could not find suitable output format for '%s'\n",
+            driverName2, functionName, fileName);
         return(asynError);
     }
 
-    /* find the encoder */
-    video_st = NULL;
-    codec = avcodec_find_encoder(codec_id);
-	if (!codec) {
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-					"%s:%s Could not find encoder for '%s'\n",
-					driverName2, functionName, avcodec_get_name(codec_id));
-		return(asynError);
-	}
+    /* We want to use msmpeg4v2 instead of mpeg4 for avi files*/
+    if (av_match_ext(fileName, "avi") && fmt->video_codec == CODEC_ID_MPEG4) {
+    	fmt->video_codec = CODEC_ID_MSMPEG4V2;
+    }
 
-	/* Create the video stream */
-	video_st = avformat_new_stream(oc, codec);
-	if (!video_st) {
-        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-            "%s:%s Could not allocate stream\n",
+    /* allocate the output media context */
+    oc = avformat_alloc_context();
+    if (!oc) {
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+            "%s:%s Memory error: Cannot allocate context\n",
             driverName2, functionName);
         return(asynError);
-	}
-	video_st->id = oc->nb_streams-1;
-	c = video_st->codec;
+    }
+    oc->oformat = fmt;
+    snprintf(oc->filename, sizeof(oc->filename), "%s", fileName);
 
-	if (codec->type != AVMEDIA_TYPE_VIDEO) {
-        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-            "%s:%s Codec context is not of type AVMEDIA_TYPE_VIDEO\n",
-            driverName2, functionName);
+    /* add the audio and video streams using the default format codecs
+       and initialize the codecs */
+    if (fmt->video_codec == CODEC_ID_NONE) {    
+        video_st = NULL;
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+            "%s:%s Selected codec cannot write video\n",
+            driverName2, functionName);   
         return(asynError);
-	}
-
-	avcodec_get_context_defaults3(c, codec);
-	c->codec_id = codec_id;
-
-    /* put sample parameters */
-    getIntegerParam(0, ffmpegFileBitrate, &(c->bit_rate));
-
-    /* frames per second */
-    AVRational avr;
-    avr.num = 1;
-    getIntegerParam(0, ffmpegFileFPS, &(avr.den));
-
-    /* resolution must be a multiple of two */
-    getIntegerParam(0, ffmpegFileWidth, &(c->width));
-    getIntegerParam(0, ffmpegFileHeight, &(c->height));
-    /* time base: this is the fundamental unit of time (in seconds) in terms
-       of which frame timestamps are represented. for fixed-fps content,
-       timebase should be 1/framerate and timestamp increments should be
-       identically 1. */
-    c->time_base = avr;
-
-	c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
-
-    c->pix_fmt = PIX_FMT_YUV420P;
-    if(codec && codec->pix_fmts){
-        const enum PixelFormat *p= codec->pix_fmts;
-        for(; *p!=-1; p++){
-            if(*p == c->pix_fmt)
-                break;
+    } else {
+        video_st = av_new_stream(oc, 0);
+        if (!video_st) {
+            asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+                "%s:%s Could not alloc stream\n",
+                driverName2, functionName);
+            return(asynError);
         }
-        if(*p == -1)
-            c->pix_fmt = codec->pix_fmts[0];
+        avcodec_get_context_defaults2(video_st->codec, AVMEDIA_TYPE_VIDEO);
+        codec = avcodec_find_encoder(fmt->video_codec);
+	    if (!codec) {
+	        printf("Codec cannot be found, trying msmpeg4v2\n");
+	        codec = avcodec_find_encoder_by_name("msmpeg4v2"); 
+	    }   
+	    if (!codec) {
+            asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+                "%s:%s Could not open any codecs\n",
+                driverName2, functionName);   
+            return(asynError);      
+	    }	    
+	    c = video_st->codec;
+        c->codec_id = codec->id;          
+        c->codec_type = AVMEDIA_TYPE_VIDEO;
+
+        /* put sample parameters */
+        getIntegerParam(0, ffmpegFileBitrate, &(c->bit_rate));
+        
+        /* frames per second */
+        AVRational avr;
+        avr.num = 1;    
+        getIntegerParam(0, ffmpegFileFPS, &(avr.den));
+        
+        /* resolution must be a multiple of two */
+        getIntegerParam(0, ffmpegFileWidth, &(c->width));
+        getIntegerParam(0, ffmpegFileHeight, &(c->height));
+        /* time base: this is the fundamental unit of time (in seconds) in terms
+           of which frame timestamps are represented. for fixed-fps content,
+           timebase should be 1/framerate and timestamp increments should be
+           identically 1. */
+        c->time_base = avr;
+        c->gop_size = 12; /* emit one intra frame every twelve frames at most */
+        c->pix_fmt = PIX_FMT_YUV420P;
+        if(codec && codec->pix_fmts){
+            const enum PixelFormat *p= codec->pix_fmts;
+            for(; *p!=-1; p++){
+                if(*p == c->pix_fmt)
+                    break;
+            }
+            if(*p == -1)
+                c->pix_fmt = codec->pix_fmts[0];
+        }        
+
+        // some formats want stream headers to be separate
+        if(oc->oformat->flags & AVFMT_GLOBALHEADER)
+            c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+
     }
 
-	if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
-		/* just for testing, we also add B frames */
-		c->max_b_frames = 2;
-	}
-	if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
-		/* Needed to avoid using macroblocks in which some coeffs overflow.
-		 * This does not happen with normal video, it just happens here as
-		 * the motion of the chroma plane does not match the luma plane. */
-		c->mb_decision = 2;
-	}
-
-	/* Some formats want stream headers to be separate. */
-	if (oc->oformat->flags & AVFMT_GLOBALHEADER) {
-		c->flags |= CODEC_FLAG_GLOBAL_HEADER;
-	}
-
-    /* Now that all the parameters are set, we can open the audio and
-     * video codecs and allocate the necessary encode buffers. */
-
-	c = video_st->codec;
-
-	/* open the codec */
-	ret = avcodec_open2(c, codec, NULL);
-	if (ret < 0) {
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-		            "%s:%s Could not open video codec: %s\n",
-		            driverName2, functionName, av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, ret));
-		return(asynError);
-	}
-
-	/* dump the format so we can see it on the console... */
-    av_dump_format(oc, 0, filename, 1);
-
-    /* open the output file, if needed */
-	ret = avio_open(&oc->pb, filename, AVIO_FLAG_WRITE);
-	if (ret < 0) {
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-							"%s:%s Could not open '%s': %s\n",
-							driverName2, functionName, filename, av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, ret));
-		return(asynError);
-	}
-
-    /* Write the stream header, if any. */
-    ret = avformat_write_header(oc, NULL);
-    if (ret < 0) {
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-				"%s:%s Error occurred when opening output file %s: %s\n",
-							driverName2, functionName, filename, av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, ret));
-		return(asynError);
+    /* set the output parameters (must be done even if no
+       parameters). */
+    if (av_set_parameters(oc, NULL) < 0) {
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+            "%s:%s Invalid output format parameters\n",
+            driverName2, functionName);            
+        return(asynError);
     }
 
+    av_dump_format(oc, 0, fileName, 1);
+    /* now that all the parameters are set, we can open the audio and
+       video codecs and allocate the necessary encode buffers */
+    /* open the codec */
+    if (avcodec_open(c, codec) < 0) {
+        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+            "%s:%s could not open codec\n",
+            driverName2, functionName);
+        return(asynError);
+    }
 	outSize = c->width * c->height * 6;   
 
     /* alloc array for output and compression */
@@ -189,7 +169,6 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
     	outArray->release();
     	outArray = NULL;
     }
-
     scArray = this->pNDArrayPool->alloc(1, &outSize, NDInt8, 0, NULL);
     outArray = this->pNDArrayPool->alloc(1, &outSize, NDInt8, 0, NULL);
     if (scArray == NULL || outArray == NULL) {
@@ -211,10 +190,25 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
     inPicture = avcodec_alloc_frame();
     scPicture = avcodec_alloc_frame();
 	avpicture_fill((AVPicture *)scPicture,(uint8_t *)scArray->pData,c->pix_fmt,c->width,c->height);       
-    scPicture->pts = 0;
+	/* open the output file, if needed */
+    if (!(fmt->flags & AVFMT_NOFILE)) {    
+        if (avio_open(&oc->pb, fileName, AVIO_FLAG_WRITE) < 0) {
+            asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
+                "%s:%s error opening file %s\n",
+                driverName2, functionName, fileName);
+            scArray->release();
+            scArray = NULL;
+            outArray->release();
+            outArray = NULL;
+            return(asynError);
+        }
+    }
+
+    /* write the stream header, if any */
+    if (av_write_header(oc) < 0)
+        printf("Could not write header for output file (incorrect codec parameters ?)");
 	needStop = 1;
     return(asynSuccess);
-
 }
 
 
@@ -226,7 +220,6 @@ asynStatus ffmpegFile::writeFile(NDArray *pArray)
 
     static const char *functionName = "writeFile";
 	int ret;
-	char errbuf[AV_ERROR_MAX_STRING_SIZE];
 
     if (!needStop) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
@@ -243,41 +236,46 @@ asynStatus ffmpegFile::writeFile(NDArray *pArray)
         return(asynError);
     }	
 	
+    video_pts = (double)video_st->pts.val * video_st->time_base.num / video_st->time_base.den;
+            
+    if (oc->oformat->flags & AVFMT_RAWPICTURE) {
+        /* raw video case. The API will change slightly in the near
+            futur for that */
+        AVPacket pkt;
+        av_init_packet(&pkt);
+        printf("How did you manage to get in this mode?\n");
+        pkt.stream_index= video_st->index;
+        pkt.data= (uint8_t *)scPicture;
+        pkt.size= sizeof(AVPicture);
 
-    /* encode the image */
-    AVPacket pkt;
-    int got_output;
-    av_init_packet(&pkt);
-    pkt.data = NULL;    // packet data will be allocated by the encoder
-    pkt.size = 0;
-
-    ret = avcodec_encode_video2(c, &pkt, this->scPicture, &got_output);
-    if (ret < 0) {
-        fprintf(stderr, "Error encoding video frame: %s\n", av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, ret));
-        exit(1);
-    }
-
-    /* If size is zero, it means the image was buffered. */
-    if (got_output) {
-        if (c->coded_frame->key_frame)
-            pkt.flags |= AV_PKT_FLAG_KEY;
-
-        pkt.stream_index = video_st->index;
-
-        /* Write the compressed frame to the media file. */
         ret = av_interleaved_write_frame(oc, &pkt);
     } else {
-    	printf("got_output = 0, shouldn't see this\n");
-        ret = 0;
-    }
-    scPicture->pts += av_rescale_q(1, video_st->codec->time_base, video_st->time_base);
+        /* encode the image */
+        int out_size = avcodec_encode_video(c, (uint8_t *) outArray->pData, outSize, scPicture);
+        /* if zero size, it means the image was buffered */
+        if (out_size > 0) {
+            AVPacket pkt;
+            av_init_packet(&pkt);
 
+            if (c->coded_frame->pts != (int64_t) AV_NOPTS_VALUE)
+                pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, video_st->time_base);
+            if(c->coded_frame->key_frame)
+                pkt.flags |= AV_PKT_FLAG_KEY;
+            pkt.stream_index= video_st->index;
+            pkt.data= (uint8_t *) outArray->pData;
+            pkt.size= out_size;
+
+            /* write the compressed frame in the media file */
+            ret = av_interleaved_write_frame(oc, &pkt);
+        } else {
+            ret = 0;
+        }
+    }
     if (ret != 0) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR, 
             "%s:%s Error while writing video frame\n",
             driverName2, functionName);
     }
-
     return(asynSuccess);
 }
 
@@ -380,7 +378,6 @@ ffmpegFile::ffmpegFile(const char *portName, int queueSize, int blockingCallback
     
     /* Initialise the ffmpeg library */
     ffmpegInitialise();
-
     this->ctx = NULL;
     this->outFile = NULL;
     this->codec = NULL;

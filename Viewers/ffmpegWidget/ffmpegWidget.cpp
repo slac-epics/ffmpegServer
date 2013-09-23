@@ -109,7 +109,7 @@ FFThread::~FFThread() {
 // run the FFThread
 void FFThread::run()
 {
-    AVFormatContext     *pFormatCtx=NULL;
+    AVFormatContext     *pFormatCtx;
     int                 videoStream;
     AVCodecContext      *pCodecCtx;
     AVCodec             *pCodec;
@@ -117,7 +117,7 @@ void FFThread::run()
     int                 frameFinished, len;
 
     // Open video file
-    if (avformat_open_input(&pFormatCtx, this->url, NULL, NULL)!=0) {
+    if (av_open_input_file(&pFormatCtx, this->url, NULL, 0, NULL)!=0) {
         printf("Opening input '%s' failed\n", this->url);
         return;
     }
@@ -147,7 +147,7 @@ void FFThread::run()
 
     // Open codec
     ffmutex->lock();
-    if(avcodec_open2(pCodecCtx, pCodec, NULL)<0) {
+    if(avcodec_open(pCodecCtx, pCodec)<0) {
         printf("Could not open codec for '%s'\n", this->url);
         return;
     }
@@ -173,7 +173,7 @@ void FFThread::run()
         }
         
         // Tell the codec to use this bit of memory
-        //pCodecCtx->internal->buffer->data = raw->mem;
+        pCodecCtx->internal_buffer = raw->mem;
 
         // Decode video frame
         len = avcodec_decode_video2(pCodecCtx, raw->pFrame, &frameFinished,
@@ -186,7 +186,7 @@ void FFThread::run()
         }
         
         // Set the internal buffer back to null so that we don't accidentally free it
-        //pCodecCtx->internal->buffer->data = NULL;
+        pCodecCtx->internal_buffer = NULL;
         
         // Fill in the output buffer
         raw->pix_fmt = pCodecCtx->pix_fmt;         
@@ -200,8 +200,9 @@ void FFThread::run()
     // tidy up
     ffmutex->lock();
     avcodec_close(pCodecCtx);
-    avformat_close_input(&pFormatCtx);
+    av_close_input_file(pFormatCtx);
     pCodecCtx = NULL;
+    pFormatCtx = NULL;
     ffmutex->unlock();
 }
 
@@ -799,10 +800,9 @@ void ffmpegWidget::mousePressEvent (QMouseEvent* event) {
      }
 }
 
-
 void ffmpegWidget::mouseMoveEvent (QMouseEvent* event) {
-	// drag the screen around so the pixel "grabbed" stays under the cursor
-	if (event->buttons() & Qt::LeftButton) {
+    // drag the screen around so the pixel "grabbed" stays under the cursor
+    if (event->buttons() & Qt::LeftButton) {
         // disable automatic updates
         disableUpdates = true;
         setX(oldx + (int)((clickx - event->x())/this->sfx));
@@ -810,7 +810,7 @@ void ffmpegWidget::mouseMoveEvent (QMouseEvent* event) {
         setY(oldy + (int)((clicky - event->y())/this->sfy));
         event->accept();
     }
-	// drag the grid around so the pixel "grabbed" stays under the cursor
+    // drag the grid around so the pixel "grabbed" stays under the cursor
     else if (event->buttons() & Qt::RightButton) {
         // disable automatic updates
         disableUpdates = true;

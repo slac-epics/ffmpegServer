@@ -29,7 +29,7 @@ FFMPEG_MODULE_VERSION=ffmpeg-0.9.2
 ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 AREA_DETECTOR=$(EPICS_MODULES)/areaDetector/$(AREA_DETECTOR_MODULE_VERSION)
 NULLHTTPD=$(EPICS_MODULES)/nullhttpd/$(NULLHTTPD_MODULE_VERSION)
-FFMPEG=/afs/slac/g/lcls/package/ffmpeg/$(FFMPEG_MODULE_VERSION)
+FFMPEG=$(PACKAGE_SITE_TOP)/ffmpeg/$(FFMPEG_MODULE_VERSION)
 # =================================================================
 # Define EPICS_BASE
 # EPICS_BASE usually appears last so other apps can override stuff:

@@ -15,7 +15,8 @@ DBD += ffmpegServer.dbd
 
 # ffmpeg must be built to c99 standard
 USR_CFLAGS_Linux += -std=c99
-USR_CXXFLAGS += -U_GNU_SOURCE
+#USR_CXXFLAGS += -U_GNU_SOURCE
+USR_CXXFLAGS += -D__USE_GNU
 
 # Include the srcs from nullhttpd
 SRC_DIRS += $(NULLHTTPD)/src
@@ -27,6 +28,8 @@ ifeq (win32-x86, $(findstring win32-x86, $(T_A)))
 	USR_INCLUDES_WIN32 += -I$(TOP)/vendor/ffmpeg-win32-dev/include
 else ifeq (windows-x64, $(findstring windows-x64, $(T_A)))
 	USR_INCLUDES_WIN32 += -I$(TOP)/vendor/ffmpeg-win64-dev/include
+else ifeq (rhel6-x86_64, $(findstring rhel6-x86_64, $(T_A)))
+	USR_INCLUDES_Linux += -I$(TOP)/vendor/ffmpeg-rhel6-x86_64/include	
 else ifeq (linux-x86_64, $(findstring linux-x86_64, $(T_A)))
 	USR_INCLUDES_Linux += -I$(TOP)/vendor/ffmpeg-linux-x86_64/include	
 else ifeq (linux-x86, $(findstring linux-x86, $(T_A)))

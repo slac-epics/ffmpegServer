@@ -80,6 +80,10 @@ static int find_frame_end(MJPEGParserContext *m, const uint8_t *buf, int buf_siz
                     pc->frame_start_found=0;
                     pc->state=0;
                     return i-3;
+				} else if(state>=0xFFD90000 && state<=0xFFD9FFFF){
+                    pc->frame_start_found=0;
+                    pc->state=0;
+					return i+1;
                 } else if(state<0xFFD00000 || state>0xFFD9FFFF){
                     m->size= (state&0xFFFF)-1;
                 }

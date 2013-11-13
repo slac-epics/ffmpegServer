@@ -1,0 +1,23 @@
+# Archive template for ffmpegServer
+
+# These should rarely change
+$(P)$(R)QUALITY			10		monitor
+$(P)$(R)QUALITY_RBV		10		monitor
+$(P)$(R)MAXW			10		monitor
+$(P)$(R)MAXW_RBV		10		monitor
+$(P)$(R)MAXH			10		monitor
+$(P)$(R)MAXH_RBV		10		monitor
+$(P)$(R)FALSE_COL		10		monitor
+$(P)$(R)FALSE_COL_RBV	10		monitor
+$(P)$(R)ALWAYS_ON		10		monitor
+$(P)$(R)ALWAYS_ON_RBV	10		monitor
+$(P)$(R)HTTP_PORT_RBV	10		monitor
+$(P)$(R)HOST_RBV		10		monitor
+$(P)$(R)CLIENTS_RBV		10		monitor
+$(P)$(R)JPG_URL_RBV		10		monitor
+$(P)$(R)MJPG_URL_RBV	10		monitor
+$(P)$(R)GX				10		monitor
+$(P)$(R)GY				10		monitor
+$(P)$(R)GRID			10		monitor
+$(P)$(R)GCOL			10		monitor
+$(P)$(R)GS				10		monitor

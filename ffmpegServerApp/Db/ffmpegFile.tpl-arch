@@ -1,0 +1,18 @@
+# Archive template for ffmpegServer
+
+# These are always changing, just sample them
+$(P)$(R)FPS_RBV			10
+$(P)$(R)NumCapture		10
+
+# These should rarely change
+$(P)$(R)AutoSave		10		monitor
+$(P)$(R)BITRATE			10		monitor
+$(P)$(R)BITRATE_RBV		10		monitor
+$(P)$(R)FPS				10		monitor
+$(P)$(R)FileFormat		10		monitor
+$(P)$(R)FileFormat_RBV	10		monitor
+$(P)$(R)FileWriteMode	10		monitor
+$(P)$(R)HEIGHT			10		monitor
+$(P)$(R)HEIGHT_RBV		10		monitor
+$(P)$(R)WIDTH			10		monitor
+$(P)$(R)WIDTH_RBV		10		monitor

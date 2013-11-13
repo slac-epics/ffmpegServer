@@ -10,6 +10,11 @@ include $(TOP)/configure/CONFIG
 DB += ffmpegStream.template
 DB += ffmpegFile.template
 
+ARCHIVE += ffmpegStream.tpl-arch
+ARCHIVE += ffmpegFile.tpl-arch
+
+REQ += ffmpegStream.tpl-req
+REQ += ffmpegFile.tpl-req
 
 include $(TOP)/configure/RULES
 #----------------------------------------

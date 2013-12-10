@@ -16,7 +16,7 @@ FFMPEGSERVER	= $(TOP)
 # ===============================================================
 ASYN_MODULE_VERSION			= R4.21-0.2.0
 AREADETECTOR_MODULE_VERSION	= R1.9.1-0.6.0
-NULLHTTPD_MODULE_VERSION	= R0.5.1-0.1.0
+NULLHTTPD_MODULE_VERSION	= R0.5.1-0.2.0
 
 # ============================================================
 # External Support module path definitions

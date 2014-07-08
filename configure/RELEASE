@@ -14,9 +14,11 @@ FFMPEGSERVER	= $(TOP)
 # ===============================================================
 # Define the version(s) of any other needed modules 
 # ===============================================================
-ASYN_MODULE_VERSION			= R4.21-0.2.0
-AREADETECTOR_MODULE_VERSION	= R1.9.1-0.10.0
-NULLHTTPD_MODULE_VERSION	= R0.5.1-0.2.0
+#AREADETECTOR_MODULE_VERSION	= R1.9.1-0.11.0
+ADCORE_MODULE_VERSION        = R2.0-0.1.0
+ADPROSILICA_MODULE_VERSION   = R2.0-0.1.0
+ASYN_MODULE_VERSION          = R4.23-0.1.0
+NULLHTTPD_MODULE_VERSION	 = R0.5.1-0.2.0
 
 # ============================================================
 # External Support module path definitions
@@ -31,7 +33,8 @@ NULLHTTPD_MODULE_VERSION	= R0.5.1-0.2.0
 #
 # If your build fails, look for these paths in your build output
 # ============================================================
-ASYN			= $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
-AREADETECTOR	= $(EPICS_MODULES)/areaDetector/$(AREADETECTOR_MODULE_VERSION)
-NULLHTTPD		= $(EPICS_MODULES)/nullHttpd/$(NULLHTTPD_MODULE_VERSION)
+ADCORE		= $(EPICS_MODULES)/ADCore/$(ADCORE_MODULE_VERSION)
+ADPROSILICA	= $(EPICS_MODULES)/ADProsilica/$(ADPROSILICA_MODULE_VERSION)
+ASYN		= $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
+NULLHTTPD	= $(EPICS_MODULES)/nullHttpd/$(NULLHTTPD_MODULE_VERSION)
 

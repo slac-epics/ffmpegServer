@@ -10,7 +10,7 @@
 #  PORT     Asyn Port name
 #  TIMEOUT  Timeout
 #  ADDR     Asyn Port address
-file $(AREADETECTOR)/db/ADBase.template
+file $(ADCORE)/db/ADBase.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR }
     { "BLxxI-DI-PHDGN-01", ":CAM:", "CAM1.CAM", "1", "0" }
@@ -22,7 +22,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR }
 #  PORT     Asyn Port name
 #  TIMEOUT  Timeout
 #  ADDR     Asyn Port address
-file $(AREADETECTOR)/db/simDetector.template
+file $(ADCORE)/db/simDetector.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR }
     { "BLxxI-DI-PHDGN-01", ":CAM:", "CAM1.CAM", "1", "0" }
@@ -37,7 +37,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR }
 #  NDARRAY_PORT  Input Array Port
 #  NDARRAY_ADDR  Input Array Address
 #  Enabled       Plugin Enabled at startup?
-file $(AREADETECTOR)/db/NDPluginBase.template
+file $(ADCORE)/db/NDPluginBase.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR, NDARRAY_PORT, NDARRAY_ADDR, Enabled }
     { "BLxxI-DI-PHDGN-01", ":ROI:", "CAM1.ROI", "1", "0", "CAM1.CAM", "0", "1" }
@@ -56,7 +56,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR, NDARRAY_PORT, NDARRAY_ADDR, Enabled }
 #  PORT     Asyn Port name
 #  TIMEOUT  Timeout
 #  ADDR     Asyn Port address
-file $(AREADETECTOR)/db/NDROI.template
+file $(ADCORE)/db/NDROI.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR }
     { "BLxxI-DI-PHDGN-01", ":ROI:", "CAM1.ROI", "1", "0" }
@@ -68,7 +68,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR }
 #  PORT     Asyn Port name
 #  TIMEOUT  Timeout
 #  ADDR     Asyn Port address
-file $(AREADETECTOR)/db/NDProcess.template
+file $(ADCORE)/db/NDProcess.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR }
     { "BLxxI-DI-PHDGN-01", ":PROC:", "CAM1.PROC", "1", "0" }
@@ -83,7 +83,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR }
 #  XSIZE      Maximum size of X histograms (e.g. 1024)
 #  YSIZE      Maximum size of Y histograms (e.g. 768)
 #  HIST_SIZE  Maximum size of Pixel binning histogram (e.g. 256 for Int8)
-file $(AREADETECTOR)/db/NDStats.template
+file $(ADCORE)/db/NDStats.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR, XSIZE, YSIZE, HIST_SIZE }
     { "BLxxI-DI-PHDGN-01", ":STAT:", "CAM1.STAT", "1", "0", "1024", "768", "256" }
@@ -99,7 +99,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR, XSIZE, YSIZE, HIST_SIZE }
 #  TYPE       Asyn Type e.g. Int32
 #  FTVL       Format, e.g. Int
 #  NELEMENTS  Number of elements
-file $(AREADETECTOR)/db/NDStdArrays.template
+file $(ADCORE)/db/NDStdArrays.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR, TYPE, FTVL, NELEMENTS }
     { "BLxxI-DI-PHDGN-01", ":ARR:", "CAM1.ARR", "1", "0", "Int8", "UCHAR", "786432" }
@@ -111,7 +111,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR, TYPE, FTVL, NELEMENTS }
 #  PORT     Asyn Port name
 #  TIMEOUT  Timeout
 #  ADDR     Asyn Port address
-file $(AREADETECTOR)/db/NDFile.template
+file $(ADCORE)/db/NDFile.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR }
     { "BLxxI-DI-PHDGN-01", ":HDF5:", "CAM1.HDF5", "1", "0" }
@@ -122,7 +122,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR }
 #  P     Device Prefix
 #  R     Device Suffix
 #  PORT  Asyn Port name
-file $(AREADETECTOR)/db/NDFileHDF5.template
+file $(ADCORE)/db/NDFileHDF5.template
 {
 pattern { P, R, PORT }
     { "BLxxI-DI-PHDGN-01", ":HDF5:", "CAM1.HDF5" }
@@ -144,7 +144,7 @@ pattern { P, R, PORT }
 #  PORT     Asyn Port name
 #  TIMEOUT  Timeout
 #  ADDR     Asyn Port address
-file $(AREADETECTOR)/db/NDOverlay.template
+file $(ADCORE)/db/NDOverlay.template
 {
 pattern { P, R, PORT, TIMEOUT, ADDR }
     { "BLxxI-DI-PHDGN-01", ":OVER:", "CAM1.OVER", "1", "0" }
@@ -163,7 +163,7 @@ pattern { P, R, PORT, TIMEOUT, ADDR }
 #  XSIZE    Link for the XSize of the overlay
 #  YSIZE    Link for the YSize of the overlay
 #  SHAPE    Shape of the overlay
-file $(AREADETECTOR)/db/NDOverlayN.template
+file $(ADCORE)/db/NDOverlayN.template
 {
 pattern { P, R, O, PORT, TIMEOUT, ADDR, NAME, XPOS, YPOS, XSIZE, YSIZE, SHAPE }
     { "BLxxI-DI-PHDGN-01", ":OVER:1:", ":OVER:", "CAM1.OVER", "1", "0", "Overlay 1", "", "", "", "", "1" }

@@ -14,7 +14,12 @@
 #CROSS_COMPILER_TARGET_ARCHS = RTEMS-beatnik
 #CROSS_COMPILER_TARGET_ARCHS = RTEMS-uC5282
 #CROSS_COMPILER_TARGET_ARCHS = RTEMS-pc586
-CROSS_COMPILER_TARGET_ARCHS = linux-x86
+ifeq '$(EPICS_HOST_ARCH)' 'rhel6-x86_64'
+CROSS_COMPILER_TARGET_ARCHS = linuxRT_glibc-x86_64
+endif
+ifeq '$(EPICS_HOST_ARCH)' 'linux-x86_64'
+CROSS_COMPILER_TARGET_ARCHS =
+endif
 
 # Set this when your IOC and the host use different paths
 # to access the application. This will be needed to boot
@@ -27,3 +32,9 @@ CROSS_COMPILER_TARGET_ARCHS = linux-x86
 # define INSTALL_LOCATION here
 #INSTALL_LOCATION=<fullpathname>
 
+# Define the path for the ffmpeg package
+ifndef CONFIG_SITE_TOP
+CONFIG_SITE_TOP=/reg/g/pcds/pyps/config
+endif
+-include $(CONFIG_SITE_TOP)/common_dirs.mak
+FFMPEG_TOP  	   += $(PSPKG_ROOT)/ffmpeg/1.2.2

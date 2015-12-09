@@ -35,3 +35,6 @@ ADCORE		= $(EPICS_MODULES)/ADCore/$(ADCORE_MODULE_VERSION)
 ASYN		= $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 NULLHTTPD	= $(EPICS_MODULES)/nullHttpd/$(NULLHTTPD_MODULE_VERSION)
 
+MY_MODULES  = /reg/neh/home/bhill/wa2/trunk/pcds/epics/modules
+NULLHTTPD	= $(MY_MODULES)/nullHttpd/current
+

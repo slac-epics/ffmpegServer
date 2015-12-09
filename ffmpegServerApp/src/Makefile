@@ -13,9 +13,16 @@ LIBRARY_IOC += ffmpegServer
 DBD += ffmpegServer.dbd
 #INC += ffmpegServer.h
 
+# TODO: Need to clean up this crap!
+# nullHttpd module too!
+# This code only builds by setting flags to old c99 std, and that
+# doesn't seem to work any more under rhel6
+# Shouldn't have to build our own libavcodec
+
 # ffmpeg must be built to c99 standard
 USR_CFLAGS_Linux += -std=c99
-USR_CXXFLAGS += -U_GNU_SOURCE
+#USR_CXXFLAGS += -U_BSD_SOURCE
+#USR_CXXFLAGS += -U_GNU_SOURCE
 #USR_CXXFLAGS += -D__USE_GNU
 
 # Include the srcs from nullhttpd
@@ -43,7 +50,7 @@ USR_CFLAGS_WIN32 += -DWIN32
 ffmpegServer_SRCS += ffmpegCommon.cpp
 ffmpegServer_SRCS += ffmpegServer.cpp cgi.c files.c format.c http.c server.c win32.c 
 ffmpegServer_SRCS += ffmpegFile.cpp
-ffmpegServer_LIBS += avdevice avformat avcodec avutil swscale
+PROD_SYS_LIBS += avdevice avformat avcodec avutil swscale
 
 include $(TOP)/configure/RULES
 

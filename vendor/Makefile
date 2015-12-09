@@ -9,18 +9,18 @@ CONFIGOPTIONS += --disable-indevs --disable-outdevs
 
 # install libs
 # Update these version numbers if you updte the ffmpeg vendor library
-FFMPEG_LINUX_LIBS += libavcodec/libavcodec.so
-FFMPEG_LINUX_LIBS += libavcodec/libavcodec.so.54
-FFMPEG_LINUX_LIBS += libavdevice/libavdevice.so
-FFMPEG_LINUX_LIBS += libavdevice/libavdevice.so.54
-FFMPEG_LINUX_LIBS += libavfilter/libavfilter.so
-FFMPEG_LINUX_LIBS += libavfilter/libavfilter.so.3
-FFMPEG_LINUX_LIBS += libavformat/libavformat.so
-FFMPEG_LINUX_LIBS += libavformat/libavformat.so.54
-FFMPEG_LINUX_LIBS += libavutil/libavutil.so
-FFMPEG_LINUX_LIBS += libavutil/libavutil.so.52
-FFMPEG_LINUX_LIBS += libswscale/libswscale.so
-FFMPEG_LINUX_LIBS += libswscale/libswscale.so.2
+#FFMPEG_LINUX_LIBS += libavcodec/libavcodec.so
+#FFMPEG_LINUX_LIBS += libavcodec/libavcodec.so.54
+#FFMPEG_LINUX_LIBS += libavdevice/libavdevice.so
+#FFMPEG_LINUX_LIBS += libavdevice/libavdevice.so.54
+#FFMPEG_LINUX_LIBS += libavfilter/libavfilter.so
+#FFMPEG_LINUX_LIBS += libavfilter/libavfilter.so.3
+#FFMPEG_LINUX_LIBS += libavformat/libavformat.so
+#FFMPEG_LINUX_LIBS += libavformat/libavformat.so.54
+#FFMPEG_LINUX_LIBS += libavutil/libavutil.so
+#FFMPEG_LINUX_LIBS += libavutil/libavutil.so.52
+#FFMPEG_LINUX_LIBS += libswscale/libswscale.so
+#FFMPEG_LINUX_LIBS += libswscale/libswscale.so.2
 
 ifeq (win32-x86, $(findstring win32-x86, $(T_A)))
 	BIN_INSTALLS_WIN32  += $(wildcard ../ffmpeg-win32-shared/bin/*.*)
@@ -29,21 +29,25 @@ else ifeq (windows-x64, $(findstring windows-x64, $(T_A)))
 	BIN_INSTALLS_WIN32  += $(wildcard ../ffmpeg-win64-shared/bin/*.*)
 	LIB_INSTALLS_WIN32  += $(wildcard ../ffmpeg-win64-dev/lib/*.*)	
 else ifeq (rhel6-x86_64, $(findstring rhel6-x86_64, $(T_A)))
-	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-rhel6-x86_64/, $(FFMPEG_LINUX_LIBS))
-	FFMPEGMAK = $(TOP)/vendor/ffmpeg-rhel6-x86_64/config.mak	
-	YASM = $(TOP)/vendor/yasm-rhel6-x86_64/yasm
+#	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-rhel6-x86_64/, $(FFMPEG_LINUX_LIBS))
+#	FFMPEGMAK = $(TOP)/vendor/ffmpeg-rhel6-x86_64/config.mak	
+#	YASM = $(TOP)/vendor/yasm-rhel6-x86_64/yasm
+else ifeq (linuxRT_glibc-x86_64, $(findstring linuxRT_glibc-x86_64, $(T_A)))
+#	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-linuxRT_glibc-x86_64/, $(FFMPEG_LINUX_LIBS))
+#	FFMPEGMAK = $(TOP)/vendor/ffmpeg-linuxRT_glibc-x86_64/config.mak	
+#	YASM = $(TOP)/vendor/yasm-linuxRT_glibc-x86_64/yasm
 else ifeq (linux-x86_64, $(findstring linux-x86_64, $(T_A)))
-	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-linux-x86_64/, $(FFMPEG_LINUX_LIBS))
-	FFMPEGMAK = $(TOP)/vendor/ffmpeg-linux-x86_64/config.mak	
-	YASM = $(TOP)/vendor/yasm-linux-x86_64/yasm
+#	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-linux-x86_64/, $(FFMPEG_LINUX_LIBS))
+#	FFMPEGMAK = $(TOP)/vendor/ffmpeg-linux-x86_64/config.mak	
+#	YASM = $(TOP)/vendor/yasm-linux-x86_64/yasm
 else ifeq (linux-x86, $(findstring linux-x86, $(T_A)))
-	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-linux-x86/, $(FFMPEG_LINUX_LIBS))
-	FFMPEGMAK = $(TOP)/vendor/ffmpeg-linux-x86/config.mak
-	YASM = $(TOP)/vendor/yasm-linux-x86/yasm
-	CONFIGOPTIONS += --arch=x86
-	CONFIGOPTIONS += --extra-cxxflags=-D_X86
-	CONFIGOPTIONS += --extra-cflags=-m32
-	CONFIGOPTIONS += --extra-ldflags=-m32
+#	LIB_INSTALLS_Linux  += $(addprefix ../ffmpeg-linux-x86/, $(FFMPEG_LINUX_LIBS))
+#	FFMPEGMAK = $(TOP)/vendor/ffmpeg-linux-x86/config.mak
+#	YASM = $(TOP)/vendor/yasm-linux-x86/yasm
+#	CONFIGOPTIONS += --arch=x86
+#	CONFIGOPTIONS += --extra-cxxflags=-D_X86
+#	CONFIGOPTIONS += --extra-cflags=-m32
+#	CONFIGOPTIONS += --extra-ldflags=-m32
 endif
 
 include $(TOP)/configure/RULES
@@ -60,11 +64,11 @@ showme:
 	@echo LIB_INSTALLS_Linux=$(LIB_INSTALLS_Linux)
 	@echo INSTALL_LIB=$(INSTALL_LIB)
 
-install: install_ffmpeg
+#install: install_ffmpeg
 
-build: build_ffmpeg
+#build: build_ffmpeg
 
-$(LIB_INSTALLS_Linux): build_ffmpeg
+#$(LIB_INSTALLS_Linux): build_ffmpeg
 
 build_ffmpeg: $(FFMPEGMAK) $(YASM)
 	@echo Building ffmpeg for $(T_A) target architecture

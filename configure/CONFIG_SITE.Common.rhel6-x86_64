@@ -1,0 +1,7 @@
+# =========================================================================
+# RHEL6 builds for external packages
+# =========================================================================
+PKG_ARCH            =	x86_64-rhel6-gcc44-opt
+USR_INCLUDES		+=	-I$(FFMPEG_TOP)/$(PKG_ARCH)/include
+SHRLIB_DEPLIB_DIRS	+=	$(FFMPEG_TOP)/$(PKG_ARCH)/lib
+PROD_DEPLIB_DIRS	+=	$(FFMPEG_TOP)/$(PKG_ARCH)/lib

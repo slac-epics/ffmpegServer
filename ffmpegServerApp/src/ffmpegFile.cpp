@@ -145,7 +145,7 @@ asynStatus ffmpegFile::openFile(const char *fileName, NDFileOpenMode_t openMode,
 
     }
 
-#if 0	/* No longer needed (sometime between ffmpeg-0.8 and ffmpeg-1.2.2)
+#if 0	/* No longer needed (sometime between ffmpeg-0.8 and ffmpeg-1.2.2) */
     /* set the output parameters (must be done even if no
        parameters). */
     if (av_set_parameters(oc, NULL) < 0) {

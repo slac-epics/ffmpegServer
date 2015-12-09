@@ -1,0 +1,9 @@
+# =========================================================================
+# linuxRT builds for external packages
+# (We're using rhel6 for now as it's compatible and we don't
+#  yet have a linuxRT build machine)
+# =========================================================================
+PKG_ARCH            =	x86_64-rhel6-gcc44-opt
+USR_INCLUDES		+=	-I$(FFMPEG_TOP)/$(PKG_ARCH)/include
+SHRLIB_DEPLIB_DIRS	+=	$(FFMPEG_TOP)/$(PKG_ARCH)/lib
+PROD_DEPLIB_DIRS	+=	$(FFMPEG_TOP)/$(PKG_ARCH)/lib

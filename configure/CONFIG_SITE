@@ -32,6 +32,9 @@ endif
 # define INSTALL_LOCATION here
 #INSTALL_LOCATION=<fullpathname>
 
+STATIC_BUILD=YES
+SHARED_LIBRARIES=YES
+
 # Define the path for the ffmpeg package
 ifndef CONFIG_SITE_TOP
 CONFIG_SITE_TOP=/reg/g/pcds/pyps/config

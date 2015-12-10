@@ -41,9 +41,7 @@ ffmpegServer_SRCS += ffmpegCommon.cpp
 ffmpegServer_SRCS += ffmpegServer.cpp cgi.c files.c format.c http.c server.c win32.c 
 ffmpegServer_SRCS += ffmpegFile.cpp
 
-FFMPEG_LIBS := avdevice avformat avcodec avutil swscale
-FFMPEG_LIBS := $(FFMPEG_LIBS:%=$(LIB_PREFIX)%$(LIB_SUFFIX))
-LIB_INSTALLS += $(addprefix $(FFMPEG_LIB_DIR)/,$(FFMPEG_LIBS))
+LIB_INSTALLS += $(wildcard $(FFMPEG_LIB_DIR)/lib*)
 
 #install: showme
 

@@ -37,4 +37,12 @@ ifndef CONFIG_SITE_TOP
 CONFIG_SITE_TOP=/reg/g/pcds/pyps/config
 endif
 -include $(CONFIG_SITE_TOP)/common_dirs.mak
-FFMPEG_TOP  	   += $(PSPKG_ROOT)/ffmpeg/1.2.2
+
+# PKG_ARCH now defined in $(EPICS_BASE)/configure/os/CONFIG_SITE.Common.$(T_A)
+FFMPEG_TOP  	   +=	$(PSPKG_ROOT)/ffmpeg/1.2.2
+FFMPEG_INC_DIR		=	$(FFMPEG_TOP)/$(PKG_ARCH)/include
+FFMPEG_LIB_DIR		=	$(FFMPEG_TOP)/$(PKG_ARCH)/lib
+
+USR_INCLUDES		+=	-I$(FFMPEG_INC_DIR)
+SHRLIB_DEPLIB_DIRS	+=	$(FFMPEG_LIB_DIR)
+PROD_DEPLIB_DIRS	+=	$(FFMPEG_LIB_DIR)

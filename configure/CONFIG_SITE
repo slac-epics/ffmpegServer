@@ -42,11 +42,20 @@ endif
 -include $(CONFIG_SITE_TOP)/common_dirs.mak
 
 # PKG_ARCH now defined in $(EPICS_BASE)/configure/os/CONFIG_SITE.Common.$(T_A)
-FFMPEG_TOP			:=	$(PSPKG_ROOT)/release/ffmpeg/1.2.2
-FFMPEG_INC_DIR		 =	$(FFMPEG_TOP)/$(PKG_ARCH)/include
-FFMPEG_LIB_DIR		 =	$(FFMPEG_TOP)/$(PKG_ARCH)/lib
 
-LIB_INSTALLS		+=	$(wildcard $(FFMPEG_LIB_DIR)/lib*)
-USR_INCLUDES		+=	-I$(FFMPEG_INC_DIR)
-SHRLIB_DEPLIB_DIRS	+=	$(FFMPEG_LIB_DIR)
-PROD_DEPLIB_DIRS	+=	$(FFMPEG_LIB_DIR)
+# Add ffmpeg package
+FFMPEG_TOP			:=	$(PSPKG_ROOT)/release/ffmpeg/1.2.2/$(PKG_ARCH)
+
+LIB_INSTALLS		+=	$(wildcard $(FFMPEG_TOP)/lib/lib*)
+USR_INCLUDES		+=	-I$(FFMPEG_TOP)/include
+SHRLIB_DEPLIB_DIRS	+=	$(FFMPEG_TOP)/lib
+PROD_DEPLIB_DIRS	+=	$(FFMPEG_TOP)/lib
+
+# Add bzip2 package
+BZIP2_TOP			:=	$(PSPKG_ROOT)/release/bzip2/1.0.6/$(PKG_ARCH)
+
+LIB_INSTALLS		+=	$(wildcard $(BZIP2_TOP)/lib/lib*)
+USR_INCLUDES		+=	-I$(BZIP2_TOP)/include
+SHRLIB_DEPLIB_DIRS	+=	$(BZIP2_TOP)/lib
+PROD_DEPLIB_DIRS	+=	$(BZIP2_TOP)/lib
+

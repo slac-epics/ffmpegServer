@@ -6,5 +6,12 @@
 -include $(TOP)/RELEASE.local
 -include $(TOP)/configure/RELEASE.local
 
-ADSIMDETECTOR=$(AREA_DETECTOR)/ADSimDetector
-NULLHTTPD=$(SUPPORT)/nullhttpd
+#ADSIMDETECTOR=$(AREA_DETECTOR)/ADSimDetector
+#NULLHTTPD=$(SUPPORT)/nullhttpd
+# Test for required macros
+ifeq ($(wildcard $(ADSUPPORT)),)
+$(error ADSUPPORT path not found: $(ADSUPPORT))
+endif
+ifeq ($(wildcard $(ASYN)),)
+$(error ASYN path not found: $(ASYN))
+endif

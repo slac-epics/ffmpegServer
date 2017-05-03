@@ -54,7 +54,7 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
     	this->supportsMultipleArrays = 1;
         /* We want to use msmpeg4v2 instead of mpeg4 for avi files*/
         if (av_match_ext(filename, "avi") && fmt->video_codec == AV_CODEC_ID_MPEG4) {
-        	fmt->video_codec = AV_CODEC_ID_MSMPEG4V2;
+            fmt->video_codec = AV_CODEC_ID_MSMPEG4V2;
         }
     }
 

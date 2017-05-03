@@ -1,0 +1,15 @@
+diff --git a/ffmpegServerApp/src/ffmpegServer.cpp b/ffmpegServerApp/src/ffmpegServer.cpp
+index 93fcd09..327bc9d 100644
+--- a/ffmpegServerApp/src/ffmpegServer.cpp
++++ b/ffmpegServerApp/src/ffmpegServer.cpp
+@@ -658,7 +658,9 @@ extern "C" int ffmpegStreamConfigure(const char *portName, int queueSize, int bl
+             driverName, MAX_FFMPEG_STREAMS);
+         return(asynError);        
+     }
+-    streams[nstreams++] = new ffmpegStream(portName, queueSize, blockingCallbacks, NDArrayPort, NDArrayAddr, maxBuffers, maxMemory, priority, stackSize);
++    ffmpegStream *pPlugin = new ffmpegStream(portName, queueSize, blockingCallbacks, NDArrayPort, NDArrayAddr, maxBuffers, maxMemory, priority, stackSize);
++    pPlugin->start();
++    streams[nstreams++] = pPlugin;
+     return(asynSuccess);
+ }
+ 

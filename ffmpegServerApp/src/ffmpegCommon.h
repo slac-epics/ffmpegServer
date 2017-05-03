@@ -10,6 +10,7 @@ extern "C" {
 #include "libavcodec/avcodec.h"
 #include "libswscale/swscale.h"
 #include "libavformat/avformat.h"
+#include "libavutil/pixfmt.h"
 }
 
 /* areaDetector includes */
@@ -17,6 +18,7 @@ extern "C" {
 
 /* asyn includes */
 #include "asynDriver.h"
+#include "asynPortDriver.h"
 
 /* This wraps the initialisation of the ffmpeg library */
 void ffmpegInitialise();

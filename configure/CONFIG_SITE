@@ -16,10 +16,16 @@
 #   continue building anyway if conflicts are found.
 CHECK_RELEASE = YES
 
+BUILD_IOCS=YES
+
 # Set this when you only want to compile this application
 #   for a subset of the cross-compiled target architectures
 #   that Base is built for.
-CROSS_COMPILER_TARGET_ARCHS = 
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linuxRT-i686,       $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linuxRT_glibc-i686, $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out linuxRT-arm_zynq,   $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out vxWorks%,           $(CROSS_COMPILER_TARGET_ARCHS))
+CROSS_COMPILER_TARGET_ARCHS := $(filter-out RTEMS%,             $(CROSS_COMPILER_TARGET_ARCHS))
 
 # To install files into a location other than $(TOP) define
 #   INSTALL_LOCATION here.
@@ -40,3 +46,68 @@ ifdef T_A
   -include $(AREA_DETECTOR)/configure/CONFIG_SITE.Common.$(T_A)
   -include $(AREA_DETECTOR)/configure/CONFIG_SITE.$(EPICS_HOST_ARCH).$(T_A)
 endif
+
+PCDS_BUILD=NO
+ifneq (,$(findstring pcds,$(PSPKG_ROOT)))
+    PCDS_BUILD=YES
+endif
+
+PKG_ARCH    =   $(T_A)
+ifeq '$(PCDS_BUILD)' 'YES'
+    PACKAGE_AREA    =   $(PSPKG_ROOT)/release
+    ifeq '$(PKG_ARCH)' 'linuxRT_glibc-x86_64'
+        PKG_ARCH    = rhel6-x86_64
+    endif
+    ifeq '$(PKG_ARCH)' 'linuxRT-x86_64'
+        PKG_ARCH    = rhel6-x86_64
+    endif
+else
+    PACKAGE_AREA    =   $(PACKAGE_SITE_TOP)
+    ifeq '$(PKG_ARCH)' 'linuxRT_glibc-x86_64'
+        PKG_ARCH    = buildroot-2015.02-x86_64
+    endif
+    ifeq '$(PKG_ARCH)' 'linuxRT-x86_64'
+        PKG_ARCH    = buildroot-2016.11.1-x86_64
+    endif
+    ifeq '$(PKG_ARCH)' 'linuxRT-i686'
+        PKG_ARCH    = buildroot-2016.11.1-i686
+    endif
+endif
+
+# Add ffmpeg package
+FFMPEG_VERSION      :=  3.3
+FFMPEG_TOP          :=  $(PACKAGE_AREA)/ffmpeg/$(FFMPEG_VERSION)/$(PKG_ARCH)
+
+LIB_INSTALL         +=  $(wildcard $(FFMPEG_TOP)/lib/lib*)
+LIB_INSTALLS        +=  $(wildcard $(FFMPEG_TOP)/lib/lib*)
+USR_INCLUDES        +=  -I$(FFMPEG_TOP)/include
+SHRLIB_DEPLIB_DIRS  +=  $(FFMPEG_TOP)/lib
+PROD_DEPLIB_DIRS    +=  $(FFMPEG_TOP)/lib
+
+# Add bzip2 package
+BZIP2_VERSION       :=  1.0.6
+BZIP2_TOP           :=  $(PACKAGE_AREA)/bzip2/$(BZIP2_VERSION)/$(PKG_ARCH)
+
+LIB_INSTALLS        +=  $(wildcard $(BZIP2_TOP)/lib/lib*)
+USR_INCLUDES        +=  -I$(BZIP2_TOP)/include
+SHRLIB_DEPLIB_DIRS  +=  $(BZIP2_TOP)/lib
+PROD_DEPLIB_DIRS    +=  $(BZIP2_TOP)/lib
+
+# Add xzlib package
+XZLIB_VERSION       := 5.2.2
+XZLIB_TOP           :=  $(PACKAGE_AREA)/xz/$(XZLIB_VERSION)/$(PKG_ARCH)
+
+LIB_INSTALLS        +=  $(wildcard $(XZLIB_TOP)/lib/lib*)
+USR_INCLUDES        +=  -I$(XZLIB_TOP)/include
+SHRLIB_DEPLIB_DIRS  +=  $(XZLIB_TOP)/lib
+PROD_DEPLIB_DIRS    +=  $(XZLIB_TOP)/lib
+
+# Add zlib package
+ZLIB_VERSION       :=  1.2.8
+ZLIB_TOP           :=  $(PACKAGE_AREA)/zlib/$(ZLIB_VERSION)/$(PKG_ARCH)
+
+LIB_INSTALLS        +=  $(wildcard $(ZLIB_TOP)/lib/lib*)
+USR_INCLUDES        +=  -I$(ZLIB_TOP)/include
+SHRLIB_DEPLIB_DIRS  +=  $(ZLIB_TOP)/lib
+PROD_DEPLIB_DIRS    +=  $(ZLIB_TOP)/lib
+

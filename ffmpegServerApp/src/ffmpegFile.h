@@ -46,7 +46,7 @@ private:
     size_t outSize;
     int needStop;      
     int sheight, swidth;
-    PixelFormat spix_fmt;
+    AVPixelFormat spix_fmt;
     AVOutputFormat *fmt;
     AVFormatContext *oc;
     AVStream *video_st;

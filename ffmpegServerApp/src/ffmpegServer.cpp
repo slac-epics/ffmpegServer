@@ -458,9 +458,9 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
         c->height = height;
         c->flags = CODEC_FLAG_QSCALE;
         c->time_base = avr;
-        c->pix_fmt = PIX_FMT_YUVJ420P;
+        c->pix_fmt = AV_PIX_FMT_YUVJ420P;
         if(codec && codec->pix_fmts){
-            const enum PixelFormat *p= codec->pix_fmts;
+            const enum AVPixelFormat *p= codec->pix_fmts;
             for(; *p!=-1; p++){
                 if(*p == c->pix_fmt)
                     break;
@@ -477,8 +477,8 @@ void ffmpegStream::processCallbacks(NDArray *pArray)
             return;
         }
         /* Override codec pix_fmt to get rid of error messages */
-        if (c->pix_fmt == PIX_FMT_YUVJ420P) {
-        	c->pix_fmt = PIX_FMT_YUV420P;
+        if (c->pix_fmt == AV_PIX_FMT_YUVJ420P) {
+            c->pix_fmt = AV_PIX_FMT_YUV420P;
         	c->color_range = AVCOL_RANGE_JPEG;
     	}
     }
@@ -627,11 +627,11 @@ ffmpegStream::ffmpegStream(const char *portName, int queueSize, int blockingCall
     ffmpegInitialise();
 
     /* make the input and output pictures */
-    inPicture = avcodec_alloc_frame();
-    scPicture = avcodec_alloc_frame();
+    inPicture = av_frame_alloc();
+    scPicture = av_frame_alloc();
 
     /* Setup correct codec for mjpeg */
-    codec = avcodec_find_encoder(CODEC_ID_MJPEG);
+    codec = avcodec_find_encoder(AV_CODEC_ID_MJPEG);
     if (!codec) {
         fprintf(stderr, "MJPG codec not found\n");
         exit(1);

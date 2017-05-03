@@ -24,9 +24,12 @@ example_LIBS += avformat
 example_LIBS += avcodec
 example_LIBS += avutil
 example_LIBS += swscale
+example_LIBS += swresample
 example_LIBS += simDetector
 
-example_SYS_LIBS_Linux += bz2
+example_LIBS += bz2
+example_LIBS += z
+example_LIBS += lzma
 
 include $(ADCORE)/ADApp/commonDriverMakefile
 

@@ -1,11 +1,42 @@
 #RELEASE Location of external products
 # Run "gnumake clean uninstall install" in the application
 # top directory each time this file is changed.
+-include $(TOP)/../../RELEASE_SITE
+-include $(TOP)/../../../../RELEASE_SITE
 
+# ==========================================================
+# Define the version strings for all needed modules
+# Use naming pattern:
+#   FOO_MODULE_VERSION = R1.2
+# so scripts can extract version strings
+# Don't set your version to anything such as "test" that
+# could match a directory name.
+# ==========================================================
+NULLHTTPD_MODULE_VERSION = R0.5.1-0.4.0
+ADSUPPORT_MODULE_VERSION = R1.1-0.1.0
+ADSIMDETECTOR_MODULE_VERSION = R2.4-0.1.2
+ADCORE_MODULE_VERSION     = R2.6-0.3.0
+ASYN_MODULE_VERSION       = R4.31-0.1.0
+
+# ==========================================================
+# Define module paths using pattern
+# FOO = $(EPICS_MODULES)/foo/$(FOO_MODULE_VERSION)
+#  or
+# FOO = /Full/Path/To/Development/Version
+# ==========================================================
 FFMPEGSERVER=$(TOP)/../..
+NULLHTTPD=$(EPICS_MODULES)/nullhttpd/$(NULLHTTPD_MODULE_VERSION)
+ADSIMDETECTOR=$(EPICS_MODULES)/ADSimDetector/$(ADSIMDETECTOR_MODULE_VERSION)
+ADCORE=$(EPICS_MODULES)/ADCore/$(ADCORE_MODULE_VERSION)
+ADSUPPORT=$(EPICS_MODULES)/ADSupport/$(ADSUPPORT_MODULE_VERSION)
+ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
 
 -include $(TOP)/../../../configure/RELEASE_PATHS.local
 -include $(TOP)/../../../configure/RELEASE_PATHS.local.$(EPICS_HOST_ARCH)
 -include $(TOP)/../../../configure/RELEASE_PRODS.local
 -include $(TOP)/RELEASE.local
 -include $(TOP)/configure/RELEASE.local
+
+# Set EPICS_BASE last so it appears last in the DB, DBD, INCLUDE, and LIB search paths
+EPICS_BASE              = $(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
+RULES=$(EPICS_BASE)

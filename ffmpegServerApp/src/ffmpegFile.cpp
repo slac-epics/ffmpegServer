@@ -52,8 +52,8 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
     } else {
     	this->supportsMultipleArrays = 1;
         /* We want to use msmpeg4v2 instead of mpeg4 for avi files*/
-        if (av_match_ext(filename, "avi") && fmt->video_codec == CODEC_ID_MPEG4) {
-        	fmt->video_codec = CODEC_ID_MSMPEG4V2;
+        if (av_match_ext(filename, "avi") && fmt->video_codec == AV_CODEC_ID_MPEG4) {
+            fmt->video_codec = AV_CODEC_ID_MSMPEG4V2;
         }
     }
 
@@ -97,7 +97,9 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
 	c->codec_id = codec_id;
 
     /* put sample parameters */
-    getIntegerParam(0, ffmpegFileBitrate, &(c->bit_rate));
+    int bit_rate;
+    getIntegerParam(0, ffmpegFileBitrate, &bit_rate);
+    c->bit_rate = bit_rate;
 
     /* frames per second */
     AVRational avr;
@@ -115,9 +117,9 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
 
 	c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
 
-    c->pix_fmt = PIX_FMT_YUV420P;
+    c->pix_fmt = AV_PIX_FMT_YUV420P;
     if(codec && codec->pix_fmts){
-        const enum PixelFormat *p= codec->pix_fmts;
+        const enum AVPixelFormat *p= codec->pix_fmts;
         for(; *p!=-1; p++){
             if(*p == c->pix_fmt)
                 break;
@@ -207,8 +209,8 @@ asynStatus ffmpegFile::openFile(const char *filename, NDFileOpenMode_t openMode,
     }
 
     /* alloc in and scaled pictures */
-    inPicture = avcodec_alloc_frame();
-    scPicture = avcodec_alloc_frame();
+    inPicture = av_frame_alloc();
+    scPicture = av_frame_alloc();
 	avpicture_fill((AVPicture *)scPicture,(uint8_t *)scArray->pData,c->pix_fmt,c->width,c->height);       
     scPicture->pts = 0;
 	needStop = 1;

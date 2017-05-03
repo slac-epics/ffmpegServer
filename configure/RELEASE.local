@@ -20,7 +20,7 @@
 # could match a directory name.
 # ==========================================================
 NULLHTTPD_MODULE_VERSION        = R0.5.1-0.4.0
-ADCORE_MODULE_VERSION           = R2.6-1.0.0
+ADCORE_MODULE_VERSION           = R2.6-2.1.0
 ADSUPPORT_MODULE_VERSION        = R1.1-0.1.0
 ASYN_MODULE_VERSION             = R4.31-0.1.0
 

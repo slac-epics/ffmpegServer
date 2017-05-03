@@ -1,3 +1,7 @@
+R2.1.1-1.1.0:   03-May-2017, H. Slepicka (slepicka)
+    Bumped ADCore to R2.6-1.0.0
+    Bumped ADSimDetector to R2.4-1.0.0
+
 R2.1.1-1.0.0:   03-May-2017, H. Slepicka (slepicka)
     FFmpeg library bumped to 3.3 (latest stable release).
     Epics Modules in use:

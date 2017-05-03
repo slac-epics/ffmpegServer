@@ -1,0 +1,46 @@
+R2.1.1-1.2.2:   18-May-2017, H. Slepicka (slepicka)
+    Bumped ADCore to R2.6-2.2.0
+
+R2.1.1-1.2.1:   17-May-2017, H. Slepicka (slepicka)
+    Bumped ADCore to R2.6-2.1.3
+    Bumped ADSimDetector to R2.4-0.1.4
+    Bumped asyn to R4.31-1.0.0
+
+R2.1.1-1.2.0:   03-May-2017, H. Slepicka (slepicka)
+    Bumped ADCore to R2.6-2.1.0
+    Bumped ADSimDetector to R2.4-0.1.3
+
+R2.1.1-1.1.0:   03-May-2017, H. Slepicka (slepicka)
+    Bumped ADCore to R2.6-1.0.0
+    Bumped ADSimDetector to R2.4-1.0.0
+
+R2.1.1-1.0.0:   03-May-2017, H. Slepicka (slepicka)
+    FFmpeg library bumped to 3.3 (latest stable release).
+    Epics Modules in use:
+        - Nullhttpd R0.5.1-0.4.0
+        - ADSupport R1.1-0.1.0
+        - ADCore R2.6-0.3.0
+        - Asyn R4.31-0.1.0
+
+    Added RELEASE_SITE to .gitignore
+    Removed configure/*.local from .gitignore to keep our beloved RELEASE.local file
+    BUILD_IOCS switched to YES at CONFIG_SITE
+    Filtering the CROSS_COMPILER_TARGETS to only linuxRT x86_64 and host.
+    First approach to a single CONFIG_SITE file for PCDS and EBEAM in terms of external packages location.
+    IOC “example” building only for host as it needs X11 libraries.
+
+    Changes to source-code:
+        - FFmpeg renamed PixelFormat to AVPixelFormat
+        - FFmpeg renamed PIX_FMT_* to AV_PIX_FMT_*
+        - AVPixelFormat was moved to libavutil/pixfmt.h
+        - avcodec_alloc_frame was deprecated. Using av_frame_alloc instead as recommended by documentation
+        - Adding asynPortDriver.h for getIntegerParam
+        - ADSimDetector now is separated from ADCore, applying the needed fixes at iocs for template files.
+        - Adding libraries needed for STATIC BUILD (swresample, lzma)
+
+    Applied patches:
+        - patches/ffmpegStream_template_add_autosave_tags.patch
+            - ffmpegStream.template: add autosave info tags. (By Matthew Pearson)
+        - patches/call_ffmpegStream_start_method.patch
+            - Calls ffmpegStream's start method. (By Bruno Martins)
+

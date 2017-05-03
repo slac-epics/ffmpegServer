@@ -18,6 +18,7 @@ extern "C" {
 
 /* asyn includes */
 #include "asynDriver.h"
+#include "asynPortDriver.h"
 
 /* This wraps the initialisation of the ffmpeg library */
 void ffmpegInitialise();

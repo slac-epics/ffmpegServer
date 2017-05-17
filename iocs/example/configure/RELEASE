@@ -14,10 +14,10 @@
 # ==========================================================
 NULLHTTPD_MODULE_VERSION = R0.5.1-0.4.0
 ADSUPPORT_MODULE_VERSION = R1.1-0.1.0
-ADSIMDETECTOR_MODULE_VERSION = R2.4-0.1.3
-ADCORE_MODULE_VERSION     = R2.6-2.1.0
-BUSY_MODULE_VERSION       = R1.6.1-0.2.4
-ASYN_MODULE_VERSION       = R4.31-0.1.0
+ADSIMDETECTOR_MODULE_VERSION = R2.4-0.1.4
+ADCORE_MODULE_VERSION     = R2.6-2.1.3
+BUSY_MODULE_VERSION       = R1.6.1-0.2.5
+ASYN_MODULE_VERSION       = R4.31-1.0.0
 
 # ==========================================================
 # Define module paths using pattern

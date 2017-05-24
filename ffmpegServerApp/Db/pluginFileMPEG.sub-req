@@ -1,0 +1,13 @@
+#
+# gigECam pluginFileMPEG Autosave file
+#
+
+file $(ADCORE)/ADApp/Db/NDPluginBase_settings.req
+{
+    {   P = "$(CAM):",	R = "FMPG$(N):"	}
+}
+
+file ffmpegFile.tpl-req
+{
+    {   P = "$(CAM):",	R = "FMPG$(N):"	}
+}

@@ -1,0 +1,11 @@
+# Autosave template for ffmpegServer
+$(P)$(R)ALWAYS_ON
+$(P)$(R)FALSE_COL
+$(P)$(R)GCOL
+$(P)$(R)GRID
+$(P)$(R)GS
+$(P)$(R)GX
+$(P)$(R)GY
+$(P)$(R)MAXH
+$(P)$(R)MAXW
+$(P)$(R)QUALITY

@@ -1,0 +1,8 @@
+# Autosave template for ffmpegServer
+
+$(P)$(R)AutoSave
+$(P)$(R)BITRATE
+$(P)$(R)FileFormat
+$(P)$(R)FileWriteMode
+$(P)$(R)HEIGHT
+$(P)$(R)WIDTH

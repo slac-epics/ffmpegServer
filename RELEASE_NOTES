@@ -1,3 +1,18 @@
+R2.1.1-2.0.5      2018-3-19 Bruce Hill
+	Updated to ADCore/R3.1-2.1.0 for qsrv fix
+
+R2.1.1-2.0.4:   29-Jan-2018, B. Hill (bhill)
+	Updated to ADCore/R3.1-2.0.0 and asyn/R4.32-1.0.0
+
+R2.1.1-2.0.3:   20-Nov-2017, B. Hill (bhill)
+    Updated to ADCore/R2.6-2.4.0
+
+R2.1.1-2.0.2:   25-Oct-2017, B. Hill (bhill)
+    Updated to ADCore/R2.6-2.3.0 for averaging fix
+
+R2.1.1-2.0.1:   3-Jun-2017, B. Hill (bhill)
+    Fixed build for rhel5
+
 R2.1.1-2.0.0:   24-May-2017, H. Slepicka (slepicka)
     Adding pluginFileMPEG and pluginMJPG from pcds-trunk merge
 

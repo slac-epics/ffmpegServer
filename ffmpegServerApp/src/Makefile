@@ -15,6 +15,8 @@ DBD += ffmpegServer.dbd
 
 # ffmpeg must be built to c99 standard
 USR_CFLAGS_Linux += -std=c99
+USR_CXXFLAGS_Linux += -D__STDC_LIMIT_MACROS
+USR_CXXFLAGS_Linux += -D__STDC_CONSTANT_MACROS
 
 # For RHEL5 we need to undef _GNU_SOURCE
 ifeq (R3.14.11, $(findstring R3.14.11, $(EPICS_BASE)))

@@ -1,3 +1,7 @@
+R2.1.1-2.1.0      2018-03-23 Bruce Hill
+	Changed to call beginProcessCallbacks() instead of NDPluginDriver::processCallbacks
+		for compatibility w/ ADCore 3.0 and greater.
+
 R2.1.1-2.0.5      2018-3-19 Bruce Hill
 	Updated to ADCore/R3.1-2.1.0 for qsrv fix
 
@@ -45,7 +49,7 @@ R2.1.1-1.0.0:   03-May-2017, H. Slepicka (slepicka)
     BUILD_IOCS switched to YES at CONFIG_SITE
     Filtering the CROSS_COMPILER_TARGETS to only linuxRT x86_64 and host.
     First approach to a single CONFIG_SITE file for PCDS and EBEAM in terms of external packages location.
-    IOC “example” building only for host as it needs X11 libraries.
+    IOC building only for host as it needs X11 libraries.
 
     Changes to source-code:
         - FFmpeg renamed PixelFormat to AVPixelFormat

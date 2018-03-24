@@ -1,3 +1,7 @@
+R2.1.1-1.2.3:   2018-03-23 Bruce Hill
+	Updated to build w/ ADCore/R3.1-2.1.0
+	Updated iocs to pull most build settings from TOP/configure/RELEASE
+
 R2.1.1-1.2.2:   18-May-2017, H. Slepicka (slepicka)
     Bumped ADCore to R2.6-2.2.0
 

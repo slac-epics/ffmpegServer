@@ -5,17 +5,17 @@
 file NDPluginBase.template
 {
 	{
-	P=$(CAM):,
-	R=MJPG$(N):,
-	PORT=MJPG$(N),
-	ADDR=0,
-	TIMEOUT=1,
-	NDARRAY_PORT=$(PLUGIN_SRC),
-	NDARRAY_ADDR=0,
-	BIT_DEPTH=$(IMAGE_BIT_DEPTH),
+	P				=	$(CAM):,
+	R				=	MJPG$(N):,
+	PORT			=	MJPG$(N),
+	ADDR			=	"\$(ADDR=0)",
+	TIMEOUT			=	"\$(TIMEOUT=1)",
+	NDARRAY_PORT	=	$(PLUGIN_SRC),
+	NDARRAY_ADDR	=	0,
+	BIT_DEPTH		=	$(IMAGE_BIT_DEPTH),
 	}
 }
-    
+
 # Macros:
 #  P        Device Prefix
 #  R        Device Suffix
@@ -26,10 +26,12 @@ file NDPluginBase.template
 file ffmpegStream.template
 {
 	{
-	P=$(CAM):,
-	R=MJPG$(N):,
-	PORT=MJPG$(N),
-	QUALITY=100,
+	P				=	$(CAM):,
+	R				=	MJPG$(N):,
+	PORT			=	MJPG$(N),
+	ADDR			=	"\$(ADDR=0)",
+	TIMEOUT			=	"\$(TIMEOUT=1)",
+	QUALITY			=	100,
 	}
 }
 

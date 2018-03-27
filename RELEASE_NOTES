@@ -1,3 +1,6 @@
+R2.1.1-2.2.0      2018-03-26 Bruce Hill
+	Made sure ADDR and TIMEOUT macros have default values in db/pluginMJPG.db 
+
 R2.1.1-2.1.0      2018-03-23 Bruce Hill
 	Changed to call beginProcessCallbacks() instead of NDPluginDriver::processCallbacks
 		for compatibility w/ ADCore 3.0 and greater.

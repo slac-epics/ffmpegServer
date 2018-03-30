@@ -1,3 +1,6 @@
+R2.1.1-2.2.1      2018-03-29 Bruce Hill
+	Updated to ADCore/R3.1-2.1.0 and removed unneeded dependency on ADSupport
+
 R2.1.1-2.2.0      2018-03-26 Bruce Hill
 	Made sure ADDR and TIMEOUT macros have default values in db/pluginMJPG.db 
 

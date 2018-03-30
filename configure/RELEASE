@@ -13,3 +13,6 @@ endif
 ifeq ($(wildcard $(ASYN)),)
 $(error Invalid ASYN path: $(ASYN))
 endif
+ifeq ($(wildcard $(NULLHTTPD)),)
+$(error Invalid NULLHTTPD path: $(NULLHTTPD))
+endif

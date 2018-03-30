@@ -12,11 +12,11 @@
 # Don't set your version to anything such as "test" that
 # could match a directory name.
 # ==========================================================
-NULLHTTPD_MODULE_VERSION = R0.5.1-0.4.0
-ADSUPPORT_MODULE_VERSION = R1.1-0.1.0
-ADSIMDETECTOR_MODULE_VERSION = R2.4-0.1.6
-ADCORE_MODULE_VERSION     = R2.6-2.3.0
-ASYN_MODULE_VERSION       = R4.31-1.0.0
+# ADCORE_MODULE_VERSION, ASYN_MODULE_VERSION, and NULLHTTPD_MODULE_VERSION are
+# defined in $FFMPEGSERVER/configure/RELEASE.local
+ADSUPPORT_MODULE_VERSION     = R1.1-0.1.1
+ADSIMDETECTOR_MODULE_VERSION = R2.7-0.0.4
+BUSY_MODULE_VERSION          = R1.6.1-0.2.6
 
 # ==========================================================
 # Define module paths using pattern
@@ -24,19 +24,44 @@ ASYN_MODULE_VERSION       = R4.31-1.0.0
 #  or
 # FOO = /Full/Path/To/Development/Version
 # ==========================================================
-FFMPEGSERVER=$(TOP)/../..
-NULLHTTPD=$(EPICS_MODULES)/nullhttpd/$(NULLHTTPD_MODULE_VERSION)
-ADSIMDETECTOR=$(EPICS_MODULES)/ADSimDetector/$(ADSIMDETECTOR_MODULE_VERSION)
-ADCORE=$(EPICS_MODULES)/ADCore/$(ADCORE_MODULE_VERSION)
-ADSUPPORT=$(EPICS_MODULES)/ADSupport/$(ADSUPPORT_MODULE_VERSION)
-ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
+FFMPEGSERVER	= $(TOP)/../..
+ADCORE			= $(EPICS_MODULES)/ADCore/$(ADCORE_MODULE_VERSION)
+ADSIMDETECTOR	= $(EPICS_MODULES)/ADSimDetector/$(ADSIMDETECTOR_MODULE_VERSION)
+ADSUPPORT		= $(EPICS_MODULES)/ADSupport/$(ADSUPPORT_MODULE_VERSION)
+ASYN			= $(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
+BUSY			= $(EPICS_MODULES)/busy/$(BUSY_MODULE_VERSION)
+NULLHTTPD		= $(EPICS_MODULES)/nullhttpd/$(NULLHTTPD_MODULE_VERSION)
 
 -include $(TOP)/../../../configure/RELEASE_PATHS.local
 -include $(TOP)/../../../configure/RELEASE_PATHS.local.$(EPICS_HOST_ARCH)
 -include $(TOP)/../../../configure/RELEASE_PRODS.local
 -include $(TOP)/RELEASE.local
 -include $(TOP)/configure/RELEASE.local
+-include $(FFMPEGSERVER)/configure/RELEASE.local
 
 # Set EPICS_BASE last so it appears last in the DB, DBD, INCLUDE, and LIB search paths
 EPICS_BASE              = $(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 RULES=$(EPICS_BASE)
+
+# Test for required macros
+ifeq ($(wildcard $(EPICS_BASE)),)
+$(error Invalid EPICS_BASE path: $(EPICS_BASE))
+endif
+ifeq ($(wildcard $(ADCORE)),)
+$(error Invalid ADCORE path: $(ADCORE))
+endif
+ifeq ($(wildcard $(ADSIMDETECTOR)),)
+$(error Invalid ADSIMDETECTOR path: $(ADSIMDETECTOR))
+endif
+ifeq ($(wildcard $(ADSUPPORT)),)
+$(error Invalid ADSUPPORT path: $(ADSUPPORT))
+endif
+ifeq ($(wildcard $(ASYN)),)
+$(error Invalid ASYN path: $(ASYN))
+endif
+ifeq ($(wildcard $(BUSY)),)
+$(error Invalid BUSY path: $(BUSY))
+endif
+ifeq ($(wildcard $(NULLHTTPD)),)
+$(error Invalid NULLHTTPD path: $(NULLHTTPD))
+endif

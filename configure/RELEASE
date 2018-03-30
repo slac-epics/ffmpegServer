@@ -7,9 +7,9 @@
 -include $(TOP)/configure/RELEASE.local
 
 # Test for required macros
-ifeq ($(wildcard $(ADSUPPORT)),)
-$(error ADSUPPORT path not found: $(ADSUPPORT))
+ifeq ($(wildcard $(ADCORE)),)
+$(error Invalid ADCORE path: $(ADCORE))
 endif
 ifeq ($(wildcard $(ASYN)),)
-$(error ASYN path not found: $(ASYN))
+$(error Invalid ASYN path: $(ASYN))
 endif

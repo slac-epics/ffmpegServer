@@ -10,7 +10,7 @@
 # Define the version strings for all needed modules
 # ==========================================================
 # Other *_MODULE_VERSION macros defined in TOP/../../configure/RELEASE
-ADSIMDETECTOR_MODULE_VERSION = R2.7-0.0.3
+ADSIMDETECTOR_MODULE_VERSION = R2.8-0.0.2
 
 # ==========================================================
 # Define module paths using pattern

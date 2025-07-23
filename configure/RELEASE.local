@@ -20,8 +20,8 @@
 # could match a directory name.
 # ==========================================================
 NULLHTTPD_MODULE_VERSION        = R0.5.1-0.4.1
-ADCORE_MODULE_VERSION           = R3.10-1.1.1
-ASYN_MODULE_VERSION             = R4.39-1.0.2
+ADCORE_MODULE_VERSION           = R3.10-1.2.0
+ASYN_MODULE_VERSION             = R4.42-1.0.0
 
 # ==========================================================
 # Define module paths using pattern

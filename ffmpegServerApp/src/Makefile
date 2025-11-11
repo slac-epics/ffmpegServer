@@ -53,7 +53,7 @@ ffmpegServer_SRCS += ffmpegCommon.cpp
 ffmpegServer_SRCS += ffmpegServer.cpp nullhttpd_extern.c nullhttpd_server.c nullhttpd_http.c nullhttpd_format.c nullhttpd_win32.c
 ffmpegServer_SRCS += ffmpegFile.cpp
 
-include $(ADCORE)/ADApp/commonLibraryMakefile
+include $(ADCORE)/cfg/commonLibraryMakefile
 
 include $(TOP)/configure/RULES
 
